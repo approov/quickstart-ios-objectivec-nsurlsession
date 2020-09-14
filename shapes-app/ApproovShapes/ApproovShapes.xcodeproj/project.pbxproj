@@ -286,7 +286,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 653V7L98XW;
 				ENABLE_BITCODE = NO;
-				INFOPLIST_FILE = ShapesApp/Info.plist;
+				INFOPLIST_FILE = ApproovShapes/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -305,7 +305,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 653V7L98XW;
 				ENABLE_BITCODE = NO;
-				INFOPLIST_FILE = ShapesApp/Info.plist;
+				INFOPLIST_FILE = ApproovShapes/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
