@@ -8,6 +8,8 @@ This quickstart is written specifically for native iOS apps that are written in 
 * [Xcode](https://developer.apple.com/xcode/) version 12 installed (version 12.3 is used in this guide)
 * The contents of the folder containing this README
 * An Apple mobile device with iOS 10 or higher
+* MacOS 11+
+* Cocoapods [installed](https://cocoapods.org)
 
 ## WHAT YOU WILL LEARN
 * How to integrate Approov into a real app in a step by step fashion
@@ -45,20 +47,21 @@ This contacts `https://shapes.approov.io/v2/shapes` to get the name of a random 
 
 ## ADD THE APPROOV SDK
 
-Get the latest Approov SDK (if you are using Windows then substitute `approov` with `approov.exe` in all cases in this quickstart)
+Get the latest Approov SDK by using `CocoaPods`. The `Podfile` configuration file is located in the `shapes-app/ApproovShapes` directory and should contain a reference to the latest version of the Approov SDK available for iOS. Install the depndency by executing:
+
 ```
-$ approov sdk -getLibrary Approov.xcframework
-iOS SDK library 2.6.0(5851) written to Approov.xcframework
+$pod install
+Analyzing dependencies
+Downloading dependencies
+Installing approov-ios-sdk (2.6.1)
+Generating Pods project
+Integrating client project
+
+[!] Please close any current Xcode sessions and use `ApproovShapes.xcworkspace` for this project from now on.
+Pod installation complete! There is 1 dependency from the Podfile and 1 total pod installed.
 ```
-In Xcode select `File` and then `Add Files to "ApproovShapes"...` and select the Approov.xcframework folder:
 
-![Add Files to ApproovShapes](readme-images/add-files-to-approovshapes.png)
-
-Make sure the `Copy items if needed` option and the target `ApproovShapes` are selected. Once the Approov framework appears in the project structure we have to ensure it is signed and embedded in the ApproovShapes binary. To do so, select the target `ApproovShapes` and in the `General` tab scroll to the `Frameworks, Libraries and Embedded Content` section where the `Approov.xcframework` entry must have `Embed & Sign` selected in the `Embed` column:
-
-![Embed & Sign](readme-images/embed-and-sign.png)
-
-The Approov SDK is now included as a dependency in your project.
+The Approov SDK is now included as a dependency in your project. Please observe `pod install` command output notice regarding the `ApproovShapes.xcworkspace` as it is the correct way to modify the project from this point on.
 
 ## ADD THE APPROOV FRAMEWORK CODE
 
