@@ -88,7 +88,7 @@ We need to add the text file to our project and ensure it gets copied to the roo
 
 ## MODIFY THE APP TO USE APPROOV
 
-Import the `ApproovURLSession.h` header so we can use its definitions in the `ApproovShapes` project. Add the import statement to `ViewController.m`:
+The approov-service-nsurlsession includes the definition and implementation of the `ApproovURLSession` class. Import the `ApproovURLSession.h` header so we can use its definitions in the `ApproovShapes` project. Add the import statement to `ViewController.m`:
 
 ```ObjectiveC
 #import "ViewController.h"
