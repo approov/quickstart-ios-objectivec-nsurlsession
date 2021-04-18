@@ -66,16 +66,6 @@ Pod installation complete! There are 2 dependencies from the Podfile and 2 total
 
 The Approov SDK is now included as a dependency in your project. Please observe `pod install` command output notice regarding the `ApproovShapes.xcworkspace` as it is the correct way to modify the project from this point on.
 
-## ADD THE APPROOV FRAMEWORK CODE
-
-The `shapes-app`' folder's sub-folder `framework` contains the source file `ApproovURLSession.m` and its header `ApproovURLSession.h`. This provides a wrapper around the Approov SDK itself to make it easier to use with ObjectiveC's `NSURLSession` class. In Xcode select `File` and then `Add Files to "ApproovShapes"...` and select the `ApproovURLSession.m` and `ApproovURLSession.h` files:
-
-![Add ObjectiveC File](readme-images/add-source-files.png)
-
-Make sure the `Copy items if needed` option and the target `ApproovShapes` are selected. Your project structure should look like this:
-
-![Final Project View](readme-images/final-project-view.png)
-
 ## ENSURE THE SHAPES API IS ADDED
 
 In order for Approov tokens to be generated for `https://shapes.approov.io/v2/shapes` it is necessary to inform Approov about it. If you are using a demo account this is unnecessary as it is already set up. For a trial account do:
