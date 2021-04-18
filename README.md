@@ -45,20 +45,23 @@ This checks the connectivity by connecting to the endpoint `https://shapes.appro
 
 This contacts `https://shapes.approov.io/v2/shapes` to get the name of a random shape. It gets the status code 400 (`Bad Request`) because this endpoint is protected with an Approov token. Next, you will add Approov into the app so that it can generate valid Approov tokens and get shapes.
 
-## ADD THE APPROOV SDK
+## ADD THE APPROOV SDK AND THE APPROOVE SERVICE NSURLSESSION
 
-Get the latest Approov SDK by using `CocoaPods`. The `Podfile` configuration file is located in the `shapes-app/ApproovShapes` directory and should contain a reference to the latest version of the Approov SDK available for iOS. Install the dependency by executing:
+Get the latest Approov SDK by using `CocoaPods`. The `Podfile` configuration file is located in the `shapes-app/ApproovShapes` directory and should contain a reference to the latest version of the Approov SDK available for iOS and the approov service that enables the ApproovSDK use. The approov-service-nsurlsession is actually an open source wrapper layer that allows you to easily use Approov with NSURLSession. This has a further dependency to the closed source Approov SDK itself. Install the dependency by executing:
 
 ```
-$pod install
+$ pod install
 Analyzing dependencies
+Cloning spec repo `approov` from `https://github.com/approov/approov-service-nsurlsession.git`
+Cloning spec repo `approov-1` from `https://github.com/approov/approov-ios-sdk.git`
 Downloading dependencies
 Installing approov-ios-sdk (2.6.1)
+Installing approov-service-nsurlsession (2.6.1)
 Generating Pods project
 Integrating client project
 
 [!] Please close any current Xcode sessions and use `ApproovShapes.xcworkspace` for this project from now on.
-Pod installation complete! There is 1 dependency from the Podfile and 1 total pod installed.
+Pod installation complete! There are 2 dependencies from the Podfile and 2 total pods installed.
 ```
 
 The Approov SDK is now included as a dependency in your project. Please observe `pod install` command output notice regarding the `ApproovShapes.xcworkspace` as it is the correct way to modify the project from this point on.
