@@ -45,7 +45,7 @@ This checks the connectivity by connecting to the endpoint `https://shapes.appro
 
 This contacts `https://shapes.approov.io/v2/shapes` to get the name of a random shape. It gets the status code 400 (`Bad Request`) because this endpoint is protected with an Approov token. Next, you will add Approov into the app so that it can generate valid Approov tokens and get shapes.
 
-## ADD THE APPROOV SDK AND THE APPROOVE SERVICE NSURLSESSION
+## ADD THE APPROOV SDK AND THE APPROOV SERVICE NSURLSESSION
 
 Get the latest Approov SDK by using `CocoaPods`. The `Podfile` configuration file is located in the `shapes-app/ApproovShapes` directory and should contain a reference to the latest version of the Approov SDK available for iOS and the approov service that enables the ApproovSDK use. The approov-service-nsurlsession is actually an open source wrapper layer that allows you to easily use Approov with NSURLSession. This has a further dependency to the closed source Approov SDK itself. Install the dependency by executing:
 
