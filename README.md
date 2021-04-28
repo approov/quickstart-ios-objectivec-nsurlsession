@@ -168,7 +168,7 @@ If you have a trial (as opposed to demo) account you have some additional option
 
 ### Configuration
 
-This quick start guide has taken you through the steps of adding Approov to the shapes demonstration app. If you have you own app using ObjectiveC you can follow exactly the same steps to add Approov. Take note of the dependency discussion [here](https://approov.io/docs/v2.2/approov-usage-documentation/#importing-the-approov-sdk-into-ios-xcode).
+This quick start guide has taken you through the steps of adding Approov to the shapes demonstration app. If you have you own app using ObjectiveC you can follow exactly the same steps to add Approov. Take note of the dependency discussion [here](https://approov.io/docs/latest/approov-usage-documentation/#importing-the-approov-sdk-into-ios-xcode).
 
 ### API Domains
 Remember you need to [add](https://approov.io/docs/latest/approov-usage-documentation/#adding-api-domains) all of the API domains that you wish to send Approov tokens for. You can still use the Approov `ObjectiveC` client for other domains, but no `Approov-Token` will be sent. 
