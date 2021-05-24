@@ -103,7 +103,7 @@ NSURLSession* defaultSession;
                 } else {
                     if([jsonDict objectForKey:@"shape"] != nil){
                         NSString* shape = [jsonDict objectForKey:@"shape"];
-                        if([shape.lowercaseString isEqualToString:@"cirlce"]){
+                        if([shape.lowercaseString isEqualToString:@"circle"]){
                             image = [UIImage imageNamed:@"Circle"];
                         } else if([shape.lowercaseString isEqualToString:@"rectangle"]){
                             image = [UIImage imageNamed:@"Rectangle"];
