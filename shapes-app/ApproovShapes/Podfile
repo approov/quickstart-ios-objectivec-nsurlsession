@@ -4,3 +4,11 @@ target 'ShapesApp' do
     pod 'approov-service-nsurlsession', '2.7.0', :source => "https://github.com/approov/approov-service-nsurlsession.git"
     pod 'approov-ios-sdk', '2.7.0', :source => "https://github.com/approov/approov-ios-sdk.git"
 end
+# This disables bitcode in all the pods (but not in the main app!!!)
+post_install do |installer|
+    installer.pods_project.targets.each do |target|
+      target.build_configurations.each do |config|
+        config.build_settings['ENABLE_BITCODE'] = 'NO'
+      end
+    end
+  end
