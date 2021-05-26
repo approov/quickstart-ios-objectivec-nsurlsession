@@ -13,7 +13,7 @@ It is also possible to use Approov in `Discovery` mode to perform an initial ass
 * The contents of the folder containing this README
 * An Apple mobile device with iOS 10 or higher
 * MacOS 11+
-* Cocoapods [installed](https://cocoapods.org)
+* Cocoapods [installed](https://cocoapods.org) (you must use version 1.9+ which offers support for xcframeworks)
 
 ## WHAT YOU WILL LEARN
 * How to integrate Approov into a real app in a step by step fashion
