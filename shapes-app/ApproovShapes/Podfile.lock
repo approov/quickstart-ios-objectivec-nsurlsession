@@ -1,0 +1,22 @@
+PODS:
+  - approov-ios-sdk (2.7.0)
+  - approov-service-nsurlsession (2.7.0):
+    - approov-ios-sdk (~> 2.7.0)
+
+DEPENDENCIES:
+  - approov-ios-sdk (= 2.7.0)
+  - approov-service-nsurlsession (= 2.7.0)
+
+SPEC REPOS:
+  https://github.com/approov/approov-ios-sdk.git:
+    - approov-ios-sdk
+  https://github.com/approov/approov-service-nsurlsession.git:
+    - approov-service-nsurlsession
+
+SPEC CHECKSUMS:
+  approov-ios-sdk: c855fabca6b66df86279fde20996cd0fa3a2ea54
+  approov-service-nsurlsession: 7b78400d523da590893f8977cd9d62201fee70ae
+
+PODFILE CHECKSUM: a04531a1ba85d05c71575aff85d1dada1c67ae30
+
+COCOAPODS: 1.10.1
