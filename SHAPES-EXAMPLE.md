@@ -41,7 +41,7 @@ This contacts `https://shapes.approov.io/v2/shapes` to get the name of a random 
 
 ## ADD THE APPROOV SDK AND THE APPROOV SERVICE NSURLSESSION
 
-Get the latest Approov SDK by using `CocoaPods`. The `Podfile` configuration file is located in the `shapes-app/ApproovShapes` directory and should contain a reference to the latest version of the Approov SDK available for iOS and the approov service that enables the ApproovSDK use. The approov-service-nsurlsession is actually an open source wrapper layer that allows you to easily use Approov with NSURLSession. This has a further dependency to the closed source Approov SDK itself. Install the dependency by executing:
+Get the latest Approov SDK by using `CocoaPods`. The `Podfile` configuration file is located in the `shapes-app/ApproovShapes` directory and should contain a reference to the latest version of the Approov SDK available for iOS and the approov service that enables the ApproovSDK use. The `approov-service-nsurlsession` is actually an open source wrapper layer that allows you to easily use Approov with `NSURLSession`. This has a further dependency to the closed source Approov SDK itself. Install the dependency by executing:
 
 ```
 $ pod install
@@ -111,9 +111,6 @@ We can now build the application by selecting `Product` and then `Archive`. Sele
 Copy the `ApproovShapes.ipa` file to a convenient working directory. Register the app with Approov:
 ```
 $ approov registration -add ApproovShapes.ipa
-registering app ApproovShapes
-lhB30o4UMuzjDsdNicQ6QiM6cEcC4Y5k/SF72fID/Es=com.yourcompany-name.ApproovShapes-1.0[1]-6285  SDK:iOS-universal(2.6.0)
-registration successful
 ```
 
 ## RUNNING THE SHAPES APP WITH APPROOV
