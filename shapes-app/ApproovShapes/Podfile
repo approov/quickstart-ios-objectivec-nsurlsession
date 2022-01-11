@@ -1,8 +1,8 @@
 target 'ShapesApp' do
     use_frameworks!
     platform :ios, '10.0'
-    pod 'approov-service-nsurlsession', '2.7.0', :source => "https://github.com/approov/approov-service-nsurlsession.git"
-    pod 'approov-ios-sdk', '2.7.0', :source => "https://github.com/approov/approov-ios-sdk.git"
+    pod 'approov-service-nsurlsession', '2.9.0', :source => "https://github.com/approov/approov-service-nsurlsession.git"
+    pod 'approov-ios-sdk', '2.9.0', :source => "https://github.com/approov/approov-ios-sdk.git"
 end
 # This disables bitcode in all the pods (but not in the main app!!!)
 post_install do |installer|

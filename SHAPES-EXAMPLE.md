@@ -49,8 +49,8 @@ Analyzing dependencies
 Cloning spec repo `approov` from `https://github.com/approov/approov-service-nsurlsession.git`
 Cloning spec repo `approov-1` from `https://github.com/approov/approov-ios-sdk.git`
 Downloading dependencies
-Installing approov-ios-sdk (2.7.0)
-Installing approov-service-nsurlsession (2.7.0)
+Installing approov-ios-sdk (2.9.0)
+Installing approov-service-nsurlsession (2.9.0)
 Generating Pods project
 Integrating client project
 

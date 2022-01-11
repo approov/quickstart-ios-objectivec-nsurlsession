@@ -35,8 +35,8 @@ It is possible to use bitcode enabled Approov SDK by providing a slightly differ
 target 'YourApplication' do
     use_frameworks!
     platform :ios, '10.0'
-    pod 'approov-service-nsurlsession', '2.7.0-bitcode', :source => "https://github.com/approov/approov-service-nsurlsession.git"
-    pod 'approov-ios-sdk-bitcode', '2.7.0', :source => "https://github.com/approov/approov-ios-sdk-bitcode.git"
+    pod 'approov-service-nsurlsession', '2.9.0-bitcode', :source => "https://github.com/approov/approov-service-nsurlsession.git"
+    pod 'approov-ios-sdk-bitcode', '2.9.0', :source => "https://github.com/approov/approov-ios-sdk-bitcode.git"
 end
 ```
 
