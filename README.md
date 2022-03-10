@@ -6,15 +6,15 @@ This quickstart provides the basic steps for integrating Approov into your app. 
 
 To follow this guide you should have received an onboarding email for a trial or paid Approov account.
 
-## ADDING APPROOV DEPENDENCY
+## ADDING APPROOV SERVICE DEPENDENCY
 The Approov integration is available via [`CocoaPods`](https://cocoapods.org/). This allows inclusion into the project by simply specifying a dependency in the `Podfile` for the app:
 
 ```
 target 'YourApplication' do
     use_frameworks!
     platform :ios, '10.0'
-    pod 'approov-service-nsurlsession', '2.9.0', :source => "https://github.com/approov/approov-service-nsurlsession.git"
-    pod 'approov-ios-sdk', '2.9.0', :source => "https://github.com/approov/approov-ios-sdk.git"
+    pod 'approov-service-nsurlsession', '3.0.0', :source => "https://github.com/approov/approov-service-nsurlsession.git"
+    pod 'approov-ios-sdk', '3.0.0', :source => "https://github.com/approov/approov-ios-sdk.git"
 end
 ```
 
@@ -29,9 +29,20 @@ Additionally, the Approov SDK needs to be initialized before use. The `<enter-yo
 ApproovURLSession* defaultSession = [ApproovURLSession sessionWithConfiguration:NSURLSessionConfiguration.defaultSessionConfiguration configString:@"<enter-your-config-string-here>"];
 ```
 
+For API domains that are configured to be protected with an Approov token, this adds the `Approov-Token` header and pins the connection. This may also substitute header values when using secret protection.
+
 ## CHECKING IT WORKS
 Initially you won't have set which API domains to protect, so the interceptor will not add anything. It will have called Approov though and made contact with the Approov cloud service. You will see logging from Approov saying `UNKNOWN_URL`.
 
 Your Approov onboarding email should contain a link allowing you to access [Live Metrics Graphs](https://approov.io/docs/latest/approov-usage-documentation/#metrics-graphs). After you've run your app with Approov integration you should be able to see the results in the live metrics within a minute or so. At this stage you could even release your app to get details of your app population and the attributes of the devices they are running upon.
 
 However, to actually protect your APIs there are some further steps you can learn about in [Next Steps](https://github.com/approov/quickstart-ios-objectivec-nsurlsession/blob/master/NEXT-STEPS.md).
+
+## NEXT STEPS
+To actually protect your APIs there are some further steps. Approov provides two different options for protecting APIs:
+
+* [TOKEN PROTECTION](https://github.com/approov/quickstart-ios-objectivec-nsurlsession/blob/master/TOKEN-PROTECTION.md): You should use this if you control the backend API(s) being protected and are able to modify them to ensure that a valid Approov token is being passed by the app. An [Approov Token](https://approov.io/docs/latest/approov-usage-documentation/#approov-tokens) is short lived crytographically signed JWT proving the authenticity of the call.
+
+* [SECRET PROTECTION](https://github.com/approov/quickstart-ios-objectivec-nsurlsession/blob/master/SECRET-PROTECTION.md): If you do not control the backend API(s) being protected, and are therefore unable to modify it to check Approov tokens, you can use this approach instead. It allows app secrets, and API keys, to be protected so that they no longer need to be included in the built code and are only made available to passing apps at runtime.
+
+Note that it is possible to use both approaches side-by-side in the same app, in case your app uses a mixture of 1st and 3rd party APIs.
