@@ -5,7 +5,7 @@ This quickstart is written specifically for native iOS apps that are written in 
 ## WHAT YOU WILL NEED
 * Access to a trial or paid Approov account
 * The `approov` command line tool [installed](https://approov.io/docs/latest/approov-installation/) with access to your account
-* [Xcode](https://developer.apple.com/xcode/) version 12 installed (version 12.3 is used in this guide)
+* [Xcode](https://developer.apple.com/xcode/) version 12 installed (version 13.2.1 is used in this guide)
 * The contents of this repo
 * An Apple mobile device with iOS 10 or higher
 * MacOS 11+
@@ -49,8 +49,8 @@ Analyzing dependencies
 Cloning spec repo `approov` from `https://github.com/approov/approov-service-nsurlsession.git`
 Cloning spec repo `approov-1` from `https://github.com/approov/approov-ios-sdk.git`
 Downloading dependencies
-Installing approov-ios-sdk (2.9.0)
-Installing approov-service-nsurlsession (2.9.0)
+Installing approov-ios-sdk (3.0.0)
+Installing approov-service-nsurlsession (3.0.0)
 Generating Pods project
 Integrating client project
 
@@ -139,3 +139,42 @@ If you still don't get a valid shape then there are some things you can try. Rem
 * Consider using an [Annotation Policy](https://approov.io/docs/latest/approov-usage-documentation/#annotation-policies) during development to directly see why the device is not being issued with a valid token.
 * Use `approov metrics` to see [Live Metrics](https://approov.io/docs/latest/approov-usage-documentation/#live-metrics) of the cause of failure.
 * You can use a debugger or simulator and get valid Approov tokens on a specific device by ensuring your device [always passes](https://approov.io/docs/latest/approov-usage-documentation/#adding-a-device-security-policy). As a shortcut, when you are first setting up, you can add a [device security policy](https://approov.io/docs/latest/approov-usage-documentation/#adding-a-device-security-policy) using the `latest` shortcut as discussed so that the `device ID` doesn't need to be extracted from the logs or an Approov token.
+
+## SHAPES APP WITH SECRET PROTECTION
+
+This section provides an illustration of an alternative option for Approov protection if you are not able to modify the backend to add an Approov Token check. We are still going to be using `https://shapes.approov.io/v1/shapes/` that simply checks for an API key, so please change line 85 so it points to `https://shapes.approov.io/v1/shapes/`. The `apiSecretKey` variable defined in line 28 should also be changed to `shapes_api_key_placeholder`, removing the actual API key out of the code:
+
+![Shapes V1 Endpoint](readme-images/shapes-v1-endpoint.png)
+
+Next we enable the [Secure Strings](https://approov.io/docs/latest/approov-usage-documentation/#secure-strings) feature:
+
+```
+approov secstrings -setEnabled
+```
+
+> Note that this command requires an [admin role](https://approov.io/docs/latest/approov-usage-documentation/#account-access-roles).
+
+You must inform Approov that it should map `shapes_api_key_placeholder` to `yXClypapWNHIifHUWmBIyPFAm` (the actual API key) in requests as follows:
+
+```
+approov secstrings -addKey shapes_api_key_placeholder -predefinedValue yXClypapWNHIifHUWmBIyPFAm
+```
+
+> Note that this command also requires an [admin role](https://approov.io/docs/latest/approov-usage-documentation/#account-access-roles).
+
+Next we need to inform Approov that it needs to substitute the placeholder value for the real API key on the `Api-Key` header. You need to add the call at `shapes-app/ApproovShapes/ViewController.m:47` and also keep the `ApproovURLSession` import at the start of the file.
+
+This processes the headers and replaces in the actual API key as required.
+
+Build and run the app again to ensure that the `ApproovShapes.ipa` in the generated build outputs is up to date. You need to register the updated app with Approov. Using the command line register the app with:
+
+```
+approov registration -add ApproovShapes.ipa
+```
+Run the app again without making any changes to the app and press the `Get Shape` button. You should now see this (or another shape):
+
+<p>
+    <img src="readme-images/shapes-good.png" width="256" title="Shapes Good">
+</p>
+
+This means that the registered app is able to access the API key, even though it is no longer embedded in the app configuration, and provide it to the shapes request.
