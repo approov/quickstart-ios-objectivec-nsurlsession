@@ -23,13 +23,25 @@ This package is actually an open source wrapper layer that allows you to easily 
 ## USING APPROOV NSURLSESSION
 The `ApproovURLSession` class mimics the interface of the `NSURLSession` class provided by Apple but includes an additional ApproovSDK attestation call. The simplest way to use the `ApproovURLSession` is to find and replace all the `NSURLSession` with `ApproovURLSession`.
 
-Additionally, the Approov SDK needs to be initialized before use. The `<enter-your-config-string-here>` is a custom string that configures your Approov account access. This will have been provided in your Approov onboarding email (it will be something like `#123456#K/XPlLtfcwnWkzv99Wj5VmAxo4CrU267J1KlQyoz8Qo=`).
+Additionally, the `ApproovService` needs to be initialized before any network request is made using `ApproovURLSession`. The `ApproovService` initialization requires a configuration string parameter replacing `<enter-your-config-string-here>`, which is a custom string that configures your Approov account access. This will have been provided in your Approov onboarding email (it will be something like `#123456#K/XPlLtfcwnWkzv99Wj5VmAxo4CrU267J1KlQyoz8Qo=`). An additional parameter is an `NSError` reference which would provide any error messages if a failure occurs.
 
 ```ObjectiveC
-ApproovURLSession* defaultSession = [ApproovURLSession sessionWithConfiguration:NSURLSessionConfiguration.defaultSessionConfiguration configString:@"<enter-your-config-string-here>"];
+ApproovService *approovService = [ApproovService sharedInstance:@"<enter-your-config-string-here>" error:&error];
+if (error != nil) {
+    ApproovURLSession* defaultSession = [ApproovURLSession sessionWithConfiguration:NSURLSessionConfiguration.defaultSessionConfiguration];
+}
 ```
 
 For API domains that are configured to be protected with an Approov token, this adds the `Approov-Token` header and pins the connection. This may also substitute header values when using secret protection.
+Please note on the above code, the `ApproovService` is instantiated and the error condition is checked for and only in case of no failure, the netwok session and later actual requests are performed. Failure to initialise the `ApproovService` should cancel any network requests since lack of initialization is generaly considered fatal.
+
+## ERROR MESSAGES
+The `ApproovService` adds additional information to the error parameter passed as argument in all the `ApproovURLSession` network calls. The additional information allows further troubleshooting and suggest if a retry should be attempted after certain time or user interaction has been requested. The error key pair values used by the `ApproovService` are:
+
+* ApproovServiceError    which contains a string with the error message
+* RejectionReasons       if the command line option is enabled (approov policy -setRejectionReasons on) you will obtain a list of rejections as string values
+* ARC                    allows inspection of [Attestation Response Code](https://approov.io/docs/v3.0/approov-usage-documentation/#getting-an-attestation-response-code) which is a base32 encoded string, if the feature is enabled 
+* RetryLastOperation     string (either `YES` or `NO`) which indicates if there might be a reasonable chance of the operation succeeding if it is reattempted later
 
 ## CHECKING IT WORKS
 Initially you won't have set which API domains to protect, so the interceptor will not add anything. It will have called Approov though and made contact with the Approov cloud service. You will see logging from Approov saying `UNKNOWN_URL`.
