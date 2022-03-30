@@ -40,7 +40,7 @@ The `ApproovService` adds additional information to the error parameter passed a
 
 * ApproovServiceError    which contains a string with the error message
 * RejectionReasons       if the command line option is enabled (approov policy -setRejectionReasons on) you will obtain a list of rejections as string values
-* ARC                    allows inspection of [Attestation Response Code](https://approov.io/docs/v3.0/approov-usage-documentation/#getting-an-attestation-response-code) which is a base32 encoded string, if the feature is enabled 
+* ARC                    allows inspection of [Attestation Response Code](https://approov.io/docs/latest/approov-usage-documentation/#getting-an-attestation-response-code) which is a base32 encoded string, if the feature is enabled 
 * RetryLastOperation     string (either `YES` or `NO`) which indicates if there might be a reasonable chance of the operation succeeding if it is reattempted later
 
 ## CHECKING IT WORKS
