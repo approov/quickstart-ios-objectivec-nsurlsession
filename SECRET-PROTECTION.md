@@ -52,7 +52,7 @@ You can add up to 16 different secret values to be substituted in this way.
 If the secret value is provided on the header `<secret-header>` then it is necessary to notify the `ApproovService` that the header is subject to substitution. You do this by making the call once, after initialization:
 
 ```ObjectiveC
-[YourApp.approovService addSubstitutionHeader:@"<secret-header>" requiredPrefix:nil];
+[approovService addSubstitutionHeader:@"<secret-header>" requiredPrefix:nil];
 ```
 
 With this in place, network calls using `ApproovURLSession` should replace the `<secret-placeholder>` with the `<secret-value>` as required when the app passes attestation.  Since the mapping lookup is performed on the placeholder value you have the flexibility of providing different secrets on different API calls, even if they passed with the same header name.
@@ -62,7 +62,7 @@ Since earlier released versions of the app may have already leaked the `<secret-
 ## REGISTERING APPS
 In order for Approov to recognize the app as being valid it needs to be registered with the service. Change the directory to the top level of your app project and then register the app with Approov:
 
-```
+```Bash
 approov registration -add YourApp.ipa
 ```
 Note, on Windows you need to substitute \ for / in the above command.
@@ -71,7 +71,11 @@ Note, on Windows you need to substitute \ for / in the above command.
 
 [Managing Registrations](https://approov.io/docs/latest/approov-usage-documentation/#managing-registrations) provides more details for app registrations, especially for releases to the Apple Store. Of particular interest to iOS is the use of codesigning certificates that belong to different team identifiers.
 
-[Bitcode](https://approov.io/docs/v3.0/approov-usage-documentation/#bitcode-mode-management) is supported by Approov but requires command line option to be specified when downloading SDKs.
+[Bitcode](https://approov.io/docs/v3.0/approov-usage-documentation/#bitcode-mode-management) is supported by Approov but requires command line option to be specified when downloading SDKs and registering apps.
+
+```Bash
+approov registration -add YourApp.ipa -bitcode
+```
 
 
 ## HANDLING REJECTIONS
@@ -115,7 +119,7 @@ Use the the following method in `ApproovSDK`:
 
 to lookup a secure string with the given `key`, returning `nil` if it is not defined. Note that you should never cache this value in your code. Approov does the caching for you in a secure way. You may define a new value for the `key` by passing a new value in `newDef` rather than `nil`. An empty string `newDef` is used to delete the secure string.
 
-Note that this method may make networking calls so should never be called from the main UI thread. Any failure during the call should populate the `NSError` variable provided with failure reason in the `ApproovSDKError` key. If this is of type `ApproovTokenFetchStatusNoNetwork` then a retry should be performed as the issue is temporary and network related. If `ApproovTokenFetchStatusRejected` is shown then the app has not passed Approov attestation and some user feedback should be provided.
+Note that this method may make networking calls so should never be called from the main UI thread. Any failure during the call should populate the `NSError` variable provided with failure reason in the `ApproovServiceError` key. If this is of type `ApproovTokenFetchStatusNoNetwork` then a retry should be performed as the issue is temporary and network related. If `ApproovTokenFetchStatusRejected` is shown then the app has not passed Approov attestation and some user feedback should be provided. Additionally, the `NSError` might contain details of the rejection reason specific to the current device and you could check them by quirying the dictionary keys `RejectionReasons` and `ARC`. The `RetryLastOperation` key suggests if it might be possible to retry again the last operation in case of failure.
 
 This method is also useful for providing runtime secrets protection when the values are not passed on headers.  
 
@@ -123,7 +127,7 @@ This method is also useful for providing runtime secrets protection when the val
 If you wish to reduce the latency associated with substituting the first secret, then make this call immediately after creating `ApproovService`:
 
 ```ObjectiveC
-[YourApp.approovService prefetchApproovToken];
+[approovService prefetch];
 ```
 
 This initiates the process of fetching the required information as a background task, so that it is available immediately when subsequently needed. Note the information will automatically expire after approximately 5 minutes.
