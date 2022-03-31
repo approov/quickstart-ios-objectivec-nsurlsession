@@ -27,9 +27,7 @@ Additionally, the `ApproovService` needs to be initialized before any network re
 
 ```ObjectiveC
 ApproovService *approovService = [ApproovService sharedInstance:@"<enter-your-config-string-here>" error:&error];
-if (error != nil) {
-    ApproovURLSession* defaultSession = [ApproovURLSession sessionWithConfiguration:NSURLSessionConfiguration.defaultSessionConfiguration];
-}
+ApproovURLSession* defaultSession = [ApproovURLSession sessionWithConfiguration:NSURLSessionConfiguration.defaultSessionConfiguration];
 ```
 
 For API domains that are configured to be protected with an Approov token, this adds the `Approov-Token` header and pins the connection. This may also substitute header values when using secret protection.

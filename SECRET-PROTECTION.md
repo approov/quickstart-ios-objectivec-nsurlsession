@@ -105,7 +105,7 @@ The quickstart also provides the following additional methods:
 In some cases the value to be substituted on a header may be prefixed by some fixed string. A common case is the presence of `Bearer` included in an authorization header to indicate the use of a bearer token. In this case you can specify a prefix as follows:
 
 ```ObjectiveC
-[YourApp.approovService addSubstitutionHeader:@"Authorization" requiredPrefix:@"Bearer "];
+[approovService addSubstitutionHeader:@"Authorization" requiredPrefix:@"Bearer "];
 ```
 
 This causes the `Bearer` prefix to be stripped before doing the lookup for the substitution, and the `Bearer` prefix added to the actual secret value as part of the substitution.
@@ -113,7 +113,7 @@ This causes the `Bearer` prefix to be stripped before doing the lookup for the s
 ### App Instance Secure Strings
 As shown, it is possible to set predefined secret strings that are only communicated to passing apps. It is also possible to get and set secure string values for each app instance. These are never communicated to the Approov cloud service, but are encrypted at rest using keys which can only be retrieved by passing apps.
 
-Use the the following method in `ApproovSDK`:
+Use the the following method in `ApproovService`:
 
 ```ObjectiveC
 -(NSString*)fetchSecureString:(NSString*)key newDefinition:(NSString*)newDef error:(NSError**)error
