@@ -36,10 +36,10 @@ Please note on the above code, the `ApproovService` is instantiated and the erro
 ## ERROR MESSAGES
 The `ApproovService` adds additional information to the error parameter passed as argument in all the `ApproovURLSession` network calls. The additional information allows further troubleshooting and suggest if a retry should be attempted after certain time or user interaction has been requested. The error key pair values used by the `ApproovService` are:
 
-* ApproovServiceError    which contains a string with the error message
-* RejectionReasons       if the command line option is enabled (approov policy -setRejectionReasons on) you will obtain a list of rejections as string values
-* ARC                    allows inspection of [Attestation Response Code](https://approov.io/docs/latest/approov-usage-documentation/#getting-an-attestation-response-code) which is a base32 encoded string, if the feature is enabled 
-* RetryLastOperation     string (either `YES` or `NO`) which indicates if there might be a reasonable chance of the operation succeeding if it is reattempted later
+* `ApproovServiceError` which contains a string with the error message
+* `RejectionReasons` if the command line option is enabled (`approov policy -setRejectionReasons on`) you will obtain a list of rejections as string values
+* `ARC` allows inspection of [Attestation Response Code](https://approov.io/docs/latest/approov-usage-documentation/#getting-an-attestation-response-code) which is a base32 encoded string, if the feature is enabled 
+* `RetryLastOperation` string (either `YES` or `NO`) which indicates if there might be a reasonable chance of the operation succeeding if it is reattempted later
 
 ## CHECKING IT WORKS
 Initially you won't have set which API domains to protect, so the interceptor will not add anything. It will have called Approov though and made contact with the Approov cloud service. You will see logging from Approov saying `UNKNOWN_URL`.
