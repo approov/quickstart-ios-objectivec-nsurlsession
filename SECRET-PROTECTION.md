@@ -113,7 +113,7 @@ This causes the `Bearer` prefix to be stripped before doing the lookup for the s
 ### App Instance Secure Strings
 As shown, it is possible to set predefined secret strings that are only communicated to passing apps. It is also possible to get and set secure string values for each app instance. These are never communicated to the Approov cloud service, but are encrypted at rest using keys which can only be retrieved by passing apps.
 
-Use the the following method in `ApproovSDK`:
+Use the the following method in `ApproovService`:
 
 ```ObjectiveC
 -(NSString*)fetchSecureString:(NSString*)key newDefinition:(NSString*)newDef error:(NSError**)error
@@ -129,7 +129,7 @@ This method is also useful for providing runtime secrets protection when the val
 If you wish to reduce the latency associated with substituting the first secret, then make this call immediately after creating `ApproovService`:
 
 ```ObjectiveC
-[approovService prefetch];
+[ApproovService prefetch];
 ```
 
 This initiates the process of fetching the required information as a background task, so that it is available immediately when subsequently needed. Note the information will automatically expire after approximately 5 minutes.
