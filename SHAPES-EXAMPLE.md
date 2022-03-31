@@ -70,35 +70,41 @@ Tokens for this domain will be automatically signed with the specific secret for
 
 ## MODIFY THE APP TO USE APPROOV
 
-The approov-service-nsurlsession includes the definition and implementation of the `ApproovURLSession` class. Import the `ApproovURLSession.h` header so we can use its definitions in the `ApproovShapes` project. Add the import statement to `ViewController.m`:
+The approov-service-nsurlsession includes the definition and implementation of the `ApproovURLSession` class. Import the `ApproovURLSession.h` header so we can use its definitions in the `ApproovShapes` project. Uncomment the import statement to `ViewController.m`:
 
 ```ObjectiveC
 #import "ViewController.h"
+// *** UNCOMMENT THE LINE BELOW TO USE APPROOV ***
 #import "ApproovURLSession.h"
 ```
 
-Find the following lines in `ViewController.m` source file:
+Find the following lines in `ViewController.m` source file and uncomment them:
 ```ObjectiveC
-// Change NSURLSession to ApproovURLSession
-NSURLSession* defaultSession;
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    // Change NSURLSession to ApproovURLSession
-    defaultSession = [NSURLSession sessionWithConfiguration:NSURLSessionConfiguration.defaultSessionConfiguration];
-}
-```
-Replace `NSURLSession` with `ApproovURLSession` and remember to include the Approov configuration string as an extra parameter. The Approov SDK needs a configuration string to identify the account associated with the app. You will have received this in your Approov onboarding email (it will be something like `#123456#K/XPlLtfcwnWkzv99Wj5VmAxo4CrU267J1KlQyoz8Qo=`).
-```ObjectiveC
-// Change NSURLSession to ApproovURLSession
+// *** UNCOMMENT THE LINES BELOW TO USE APPROOV
+ApproovService *approovService;
 ApproovURLSession* defaultSession;
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    // Change NSURLSession to ApproovURLSession
-    defaultSession = [ApproovURLSession sessionWithConfiguration:NSURLSessionConfiguration.defaultSessionConfiguration configString:@"<enter-you-config-string-here>"];
+```
+Now you need to replace `NSURLSession` with `ApproovURLSession` and initialize the ApproovService using the apropriate configuration string. The Approov SDK needs a configuration string to identify the account associated with the app. You will have received this in your Approov onboarding email (it will be something like `#123456#K/XPlLtfcwnWkzv99Wj5VmAxo4CrU267J1KlQyoz8Qo=`). Find the `viewDidLoad` function and uncomment the lines indicated:
+```ObjectiveC
+// *** UNCOMMENT THE LINES BELOW TO USE APPROOV
+NSError* error;
+approovService = [ApproovService sharedInstance:@"<enter-you-config-string-here>" error:&error];
+if (error != nil) {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        self.statusImageView.image = [UIImage imageNamed:@"approov"];
+        self.statusTextView.text = @"Error initializing ApproovService";
+    });
 }
+defaultSession = [ApproovURLSession sessionWithConfiguration:NSURLSessionConfiguration.defaultSessionConfiguration];
 ```
 
-The `ApproovURLSession` class adds the `Approov-Token` header and also applies pinning for the connections to ensure that no Man-in-the-Middle can eavesdrop on any communication being made. 
+Lastly, make sure we are using the authenticated endpoint for the shapes server. Find the `checkSape` function and uncomment the line bellow the comment:
+```ObjectiveC
+// *** UNCOMMENT THE LINES BELOW TO USE APPROOV
+NSURL* shapesURL = [[NSURL alloc] initWithString:@"https://shapes.approov.io/v2/shapes"];
+```
+
+The `ApproovURLSession` class adds the `Approov-Token` header and also applies pinning for the connections to ensure that no Man-in-the-Middle can eavesdrop on any communication being made. The `Approov-Token` header is checked by the server at `https://shapes.approov.io/v2/shapes` and if the validity of the token is asserted, a shape should be displayed.
 
 ## REGISTER YOUR APP WITH APPROOV
 
@@ -163,7 +169,7 @@ approov secstrings -addKey shapes_api_key_placeholder -predefinedValue yXClypapW
 
 > Note that this command also requires an [admin role](https://approov.io/docs/latest/approov-usage-documentation/#account-access-roles).
 
-Next we need to inform Approov that it needs to substitute the placeholder value for the real API key on the `Api-Key` header. You need to add the call at `shapes-app/ApproovShapes/ViewController.m:47` and also keep the `ApproovURLSession` import at the start of the file.
+Next we need to inform Approov that it needs to substitute the placeholder value for the real API key on the `Api-Key` header. You need to add the call at `shapes-app/ApproovShapes/ViewController.m:64` and also keep the `ApproovURLSession` import at the start of the file.
 
 This processes the headers and replaces in the actual API key as required.
 

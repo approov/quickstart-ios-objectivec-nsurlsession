@@ -16,6 +16,8 @@
 
 
 #import "ViewController.h"
+// *** UNCOMMENT THE LINE BELOW TO USE APPROOV ***
+//#import "ApproovURLSession.h"
 
 @interface ViewController ()
 @property (weak, nonatomic) IBOutlet UIImageView *statusImageView;
@@ -26,12 +28,27 @@
 @implementation ViewController
 // *** CHANGE THE LINE BELOW FOR APPROOV USING SECURE STRINGS TO `shapes_api_key_placeholder` ***
 NSString* apiSecretKey = @"yXClypapWNHIifHUWmBIyPFAm";
-// Change NSURLSession to ApproovURLSession
 NSURLSession* defaultSession;
+// *** UNCOMMENT THE LINES BELOW TO USE APPROOV
+/*
+ApproovService *approovService;
+ApproovURLSession* defaultSession;
+ */
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // *** CHANGE NSURLSession to ApproovURLSession TO USE APPROOV ***
     defaultSession = [NSURLSession sessionWithConfiguration:NSURLSessionConfiguration.defaultSessionConfiguration];
+    // *** UNCOMMENT THE LINES BELOW TO USE APPROOV
+    /*
+    NSError* error;
+    approovService = [ApproovService sharedInstance:@"<enter-you-config-string-here>" error:&error];
+    if (error != nil) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            self.statusImageView.image = [UIImage imageNamed:@"approov"];
+            self.statusTextView.text = @"Error initializing ApproovService";
+        });
+    }
+    defaultSession = [ApproovURLSession sessionWithConfiguration:NSURLSessionConfiguration.defaultSessionConfiguration];
+     */
 }
 // check unprotected hello endpoint
 - (IBAction)checkHello:(id)sender {
@@ -68,7 +85,7 @@ NSURLSession* defaultSession;
             message = @"Unknown networking error";
             image = [UIImage imageNamed: @"confused"];
         }
-        
+
         NSLog(@"%@: %@", helloURL, message);
         
         // Display the image on screen using the main queue
@@ -83,6 +100,8 @@ NSURLSession* defaultSession;
 // check Approov-protected shapes endpoint
 - (IBAction)checkShape:(id)sender {
     NSURL* shapesURL = [[NSURL alloc] initWithString:@"https://shapes.approov.io/v1/shapes"];
+    // *** UNCOMMENT THE LINES BELOW TO USE APPROOV
+    // NSURL* shapesURL = [[NSURL alloc] initWithString:@"https://shapes.approov.io/v2/shapes"];
     dispatch_async(dispatch_get_main_queue(), ^{
         self.statusImageView.image = [UIImage imageNamed:@"approov"];
         self.statusTextView.text = @"Checking app authenticity...";
