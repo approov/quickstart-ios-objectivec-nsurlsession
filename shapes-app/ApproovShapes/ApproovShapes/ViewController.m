@@ -40,7 +40,7 @@ ApproovURLSession* defaultSession;
     // *** UNCOMMENT THE LINES BELOW TO USE APPROOV
     /*
     NSError* error;
-    approovService = [ApproovService sharedInstance:@"<enter-you-config-string-here>" error:&error];
+    approovService = [ApproovService init:@"<enter-you-config-string-here>" error:&error];
     if (error != nil) {
         dispatch_async(dispatch_get_main_queue(), ^{
             self.statusImageView.image = [UIImage imageNamed:@"approov"];

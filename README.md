@@ -26,7 +26,7 @@ The `ApproovURLSession` class mimics the interface of the `NSURLSession` class p
 Additionally, the `ApproovService` needs to be initialized before any network request is made using `ApproovURLSession`. The `ApproovService` initialization requires a configuration string parameter replacing `<enter-your-config-string-here>`, which is a custom string that configures your Approov account access. This will have been provided in your Approov onboarding email (it will be something like `#123456#K/XPlLtfcwnWkzv99Wj5VmAxo4CrU267J1KlQyoz8Qo=`). An additional parameter is an `NSError` reference which would provide any error messages if a failure occurs.
 
 ```ObjectiveC
-ApproovService *approovService = [ApproovService sharedInstance:@"<enter-your-config-string-here>" error:&error];
+ApproovService *approovService = [ApproovService init:@"<enter-your-config-string-here>" error:&error];
 ApproovURLSession* defaultSession = [ApproovURLSession sessionWithConfiguration:NSURLSessionConfiguration.defaultSessionConfiguration];
 ```
 

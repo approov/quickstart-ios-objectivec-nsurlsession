@@ -121,7 +121,7 @@ Use the the following method in `ApproovService`:
 
 to lookup a secure string with the given `key`, returning `nil` if it is not defined. Note that you should never cache this value in your code. Approov does the caching for you in a secure way. You may define a new value for the `key` by passing a new value in `newDef` rather than `nil`. An empty string `newDef` is used to delete the secure string.
 
-Note that this method may make networking calls so should never be called from the main UI thread. Any failure during the call should populate the `NSError` variable provided with failure reason in the `ApproovServiceError` key. If this is of type `ApproovTokenFetchStatusNoNetwork` then a retry should be performed as the issue is temporary and network related. If `ApproovTokenFetchStatusRejected` is shown then the app has not passed Approov attestation and some user feedback should be provided. Additionally, the `NSError` might contain details of the rejection reason specific to the current device and you could check them by quirying the dictionary keys `RejectionReasons` and `ARC`. The `RetryLastOperation` key suggests if it might be possible to retry again the last operation in case of failure.
+Note that this method may make networking calls so should never be called from the main UI thread. Any failure during the call should populate the `NSError` variable provided with failure reason in the `ApproovServiceError` key.  If `ApproovTokenFetchStatusRejected` is shown then the app has not passed Approov attestation and some user feedback should be provided. Additionally, the `NSError` might contain details of the rejection reason specific to the current device and you could check them by quirying the dictionary keys `RejectionReasons` and `ARC`. The `RetryLastOperation` key suggests if it might be possible to retry again the last operation in case of failure.
 
 This method is also useful for providing runtime secrets protection when the values are not passed on headers.  
 
@@ -129,7 +129,7 @@ This method is also useful for providing runtime secrets protection when the val
 If you wish to reduce the latency associated with substituting the first secret, then make this call immediately after creating `ApproovService`:
 
 ```ObjectiveC
-[ApproovService prefetch];
+[approovService prefetch];
 ```
 
 This initiates the process of fetching the required information as a background task, so that it is available immediately when subsequently needed. Note the information will automatically expire after approximately 5 minutes.
