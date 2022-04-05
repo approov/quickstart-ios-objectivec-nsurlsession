@@ -106,7 +106,7 @@ ApproovURLSession* defaultSession;
     });
     
     // *** UNCOMMENT THE LINE BELOW FOR APPROOV USING SECRET PROTECTION ***
-    //[[ApproovService shared] addSubstitutionHeader:@"Api-Key"];
+    //[[ApproovService shared] addSubstitutionHeader:@"Api-Key" requiredPrefix:nil];
 
     // We add the Api-Key to the request headers
     NSURLRequest* request = [[NSURLRequest alloc] initWithURL:shapesURL];
