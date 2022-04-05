@@ -78,8 +78,6 @@ Note, on Windows you need to substitute \ for / in the above command.
 approov registration -add YourApp.ipa -bitcode
 ```
 
-
-
 ## HANDLING REJECTIONS
 If the app is not recognized as being valid by Approov then the `NSError` variable is returned from the network request and the API call is not completed. The secret value will never be communicated to the app in this case.
 

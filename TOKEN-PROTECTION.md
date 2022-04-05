@@ -52,7 +52,7 @@ If want to use [Token Binding](https://approov.io/docs/latest/approov-usage-docu
 In this case it means that the value of `Authorization` holds the token value to be bound. This only needs to be called once. On subsequent requests the value of the specified header is read and its value set as the token binding value. Note that you should select a header whose value does not typically change from request to request, as each change requires a new Approov token to be fetched.
 
 ### Prefetching
-If you wish to reduce the latency associated with fetching the first Approov token, then make this call immediately after creating `ApproovService`:
+If you wish to reduce the latency associated with fetching the first Approov token, then make this call immediately after initializing `ApproovService`:
 
 ```ObjectiveC
 [approovService prefetch];
