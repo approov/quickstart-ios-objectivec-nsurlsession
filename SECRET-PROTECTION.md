@@ -105,7 +105,7 @@ The quickstart also provides the following additional methods:
 In some cases the value to be substituted on a header may be prefixed by some fixed string. A common case is the presence of `Bearer` included in an authorization header to indicate the use of a bearer token. In this case you can specify a prefix as follows:
 
 ```ObjectiveC
-[approovService addSubstitutionHeader:@"Authorization" requiredPrefix:@"Bearer "];
+[[ApproovService shared] addSubstitutionHeader:@"Authorization" requiredPrefix:@"Bearer "];
 ```
 
 This causes the `Bearer` prefix to be stripped before doing the lookup for the substitution, and the `Bearer` prefix added to the actual secret value as part of the substitution.
@@ -129,7 +129,7 @@ This method is also useful for providing runtime secrets protection when the val
 If you wish to reduce the latency associated with substituting the first secret, then make this call immediately after creating `ApproovService`:
 
 ```ObjectiveC
-[approovService prefetch];
+[ApproovService prefetch];
 ```
 
 This initiates the process of fetching the required information as a background task, so that it is available immediately when subsequently needed. Note the information will automatically expire after approximately 5 minutes.

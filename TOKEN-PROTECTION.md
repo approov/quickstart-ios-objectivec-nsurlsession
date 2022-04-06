@@ -35,8 +35,8 @@ The quickstart also provides the following additional methods:
 The default header name of `Approov-Token` can be changed as follows:
 
 ```ObjectiveC
-[approovService setApproovTokenHeader:@"Authorization"];
-[approovService setApproovTokenPrefix:@"Bearer "];
+[[ApproovService shared] setApproovTokenHeader:@"Authorization"];
+[[ApproovService shared] setApproovTokenPrefix:@"Bearer "];
 ```
 
 The first call changes is the new header name and the second a prefix to be added to the Approov token. This is primarily for integrations where the Approov Token JWT might need to be prefixed with `Bearer` and passed in the `Authorization` header.
@@ -45,7 +45,7 @@ The first call changes is the new header name and the second a prefix to be adde
 If want to use [Token Binding](https://approov.io/docs/latest/approov-usage-documentation/#token-binding) then set the header holding the value to be used for binding as follows:
 
 ```ObjectiveC
-[approovService setBindingHeader:@"Authorization"];
+[ApproovService setBindingHeader:@"Authorization"];
 
 ```
 
@@ -55,7 +55,7 @@ In this case it means that the value of `Authorization` holds the token value to
 If you wish to reduce the latency associated with fetching the first Approov token, then make this call immediately after creating `ApproovService`:
 
 ```ObjectiveC
-[approovService prefetch];
+[ApproovService prefetch];
 ```
 
 This initiates the process of fetching an Approov token as a background task, so that a cached token is available immediately when subsequently needed, or at least the fetch time is reduced. Note that there is no point in performing a prefetch if you are using token binding.
