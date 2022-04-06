@@ -5,7 +5,7 @@ This quickstart is written specifically for native iOS apps that are written in 
 ## WHAT YOU WILL NEED
 * Access to a trial or paid Approov account
 * The `approov` command line tool [installed](https://approov.io/docs/latest/approov-installation/) with access to your account
-* [Xcode](https://developer.apple.com/xcode/) version 12 installed (version 13.2.1 is used in this guide)
+* [Xcode](https://developer.apple.com/xcode/) version 13 installed (version 13.2.1 is used in this guide)
 * The contents of this repo
 * An Apple mobile device with iOS 10 or higher
 * MacOS 11+
@@ -31,13 +31,15 @@ Click on the `Hello` button and you should see this:
     <img src="readme-images/hello-okay.png" width="256" title="Hello Okay">
 </p>
 
-This checks the connectivity by connecting to the endpoint `https://shapes.approov.io/v1/hello`. Now press the `Shape` button and you will see this:
+This checks the connectivity by connecting to the endpoint `https://shapes.approov.io/v1/hello`. Now press the `Shape` button and you will see this (or a different shape):
 
 <p>
-    <img src="readme-images/shapes-bad.png" width="256" title="Shapes Bad">
+    <img src="readme-images/shapes-good.png" width="256" title="Shapes Good">
 </p>
 
-This contacts `https://shapes.approov.io/v2/shapes` to get the name of a random shape. It gets the status code 400 (`Bad Request`) because this endpoint is protected with an Approov token. Next, you will add Approov into the app so that it can generate valid Approov tokens and get shapes.
+This contacts `https://shapes.approov.io/v1/shapes` to get the name of a random shape. This endpoint is protected with an API key that is built into the code, and therefore can be easily extracted from the app.
+
+The subsequent steps of this guide show you how to provide better protection, either using an Approov token or by migrating the API key to become an Approov managed secret.
 
 ## ADD THE APPROOV SDK AND THE APPROOV SERVICE NSURLSESSION
 
@@ -98,13 +100,13 @@ if (error != nil) {
 defaultSession = [ApproovURLSession sessionWithConfiguration:NSURLSessionConfiguration.defaultSessionConfiguration];
 ```
 
-Lastly, make sure we are using the authenticated endpoint for the shapes server. Find the `checkSape` function and uncomment the line bellow the comment:
+Lastly, make sure we are using the Approov protected endpoint for the shapes server. Find the `checkShape` function and uncomment the line bellow the comment:
 ```ObjectiveC
 // *** UNCOMMENT THE LINES BELOW TO USE APPROOV
-NSURL* shapesURL = [[NSURL alloc] initWithString:@"https://shapes.approov.io/v2/shapes"];
+NSURL* shapesURL = [[NSURL alloc] initWithString:@"https://shapes.approov.io/v3/shapes"];
 ```
 
-The `ApproovURLSession` class adds the `Approov-Token` header and also applies pinning for the connections to ensure that no Man-in-the-Middle can eavesdrop on any communication being made. The `Approov-Token` header is checked by the server at `https://shapes.approov.io/v2/shapes` and if the validity of the token is asserted, a shape should be displayed.
+The `ApproovURLSession` class adds the `Approov-Token` header and also applies pinning for the connections to ensure that no Man-in-the-Middle can eavesdrop on any communication being made. The `Approov-Token` header is checked by the server at `https://shapes.approov.io/v3/shapes` (along with the API key) and if the validity of the token is verified, a shape should be displayed.
 
 ## REGISTER YOUR APP WITH APPROOV
 
@@ -169,7 +171,7 @@ approov secstrings -addKey shapes_api_key_placeholder -predefinedValue yXClypapW
 
 > Note that this command also requires an [admin role](https://approov.io/docs/latest/approov-usage-documentation/#account-access-roles).
 
-Next we need to inform Approov that it needs to substitute the placeholder value for the real API key on the `Api-Key` header. You need to add the call at `shapes-app/ApproovShapes/ViewController.m:64` and also keep the `ApproovURLSession` import at the start of the file.
+Next we need to inform Approov that it needs to substitute the placeholder value for the real API key on the `Api-Key` header. You need to add the call at `shapes-app/ApproovShapes/ViewController.m:109` and also keep the `ApproovURLSession` import at the start of the file.
 
 This processes the headers and replaces in the actual API key as required.
 

@@ -26,7 +26,7 @@
 @end
 
 @implementation ViewController
-// *** CHANGE THE LINE BELOW FOR APPROOV USING SECURE STRINGS TO `shapes_api_key_placeholder` ***
+// *** CHANGE THE LINE BELOW FOR APPROOV USING SECRET PROTECTION TO `shapes_api_key_placeholder` ***
 NSString* apiSecretKey = @"yXClypapWNHIifHUWmBIyPFAm";
 NSURLSession* defaultSession;
 // *** UNCOMMENT THE LINES BELOW TO USE APPROOV
@@ -36,6 +36,7 @@ ApproovURLSession* defaultSession;
  */
 - (void)viewDidLoad {
     [super viewDidLoad];
+    // *** COMMENT THE LINE BELOW TO USE APPROOV
     defaultSession = [NSURLSession sessionWithConfiguration:NSURLSessionConfiguration.defaultSessionConfiguration];
     // *** UNCOMMENT THE LINES BELOW TO USE APPROOV
     /*
@@ -57,11 +58,7 @@ ApproovURLSession* defaultSession;
         self.statusImageView.image = [UIImage imageNamed:@"approov"];
         self.statusTextView.text = @"Checking connectivity...";
     });
-    // We add the Api-Key to the request headers
     NSURLRequest* request = [[NSURLRequest alloc] initWithURL:helloURL];
-    [request setValue:apiSecretKey forKey:@"Api-Key"];
-    // *** UNCOMMENT THE LINE BELOW FOR APPROOV USING SECURE STRINGS ***
-    //[[ApproovSDK sharedInstance] addSubstitutionHeader:@"Api-Key"];
     NSURLSessionDataTask* task = [defaultSession dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error){
         NSString* message;
         UIImage* image;
@@ -97,17 +94,24 @@ ApproovURLSession* defaultSession;
     [task resume];
 }
 
-// check Approov-protected shapes endpoint
+// check shapes endpoint
 - (IBAction)checkShape:(id)sender {
+    // *** COMMENT THE LINE BELOW TO USE APPROOV
     NSURL* shapesURL = [[NSURL alloc] initWithString:@"https://shapes.approov.io/v1/shapes"];
-    // *** UNCOMMENT THE LINES BELOW TO USE APPROOV
-    // NSURL* shapesURL = [[NSURL alloc] initWithString:@"https://shapes.approov.io/v2/shapes"];
+    // *** UNCOMMENT THE LINE BELOW TO USE APPROOV
+    // NSURL* shapesURL = [[NSURL alloc] initWithString:@"https://shapes.approov.io/v3/shapes"];
     dispatch_async(dispatch_get_main_queue(), ^{
         self.statusImageView.image = [UIImage imageNamed:@"approov"];
-        self.statusTextView.text = @"Checking app authenticity...";
+        self.statusTextView.text = @"Getting a shape...";
     });
     
-    NSURLSessionDataTask* task = [defaultSession dataTaskWithURL:shapesURL completionHandler:^(NSData *data, NSURLResponse *response, NSError *error){
+    // *** UNCOMMENT THE LINE BELOW FOR APPROOV USING SECRET PROTECTION ***
+    //[[ApproovService shared] addSubstitutionHeader:@"Api-Key" requiredPrefix:nil];
+
+    // We add the Api-Key to the request headers
+    NSURLRequest* request = [[NSURLRequest alloc] initWithURL:shapesURL];
+    [request setValue:apiSecretKey forKey:@"Api-Key"];
+    NSURLSessionDataTask* task = [defaultSessiondataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error){
         NSString* message;
         UIImage* image;
         
