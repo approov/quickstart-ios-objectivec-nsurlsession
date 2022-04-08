@@ -77,14 +77,11 @@ NSError* error;
 if (error != nil) {
     // Test for the presence of ApproovServiceError
     if ([error.userInfo objectForKey:@"ApproovServiceError"]){
-        NSString* errorType = [error.userInfo objectForKey:@"ApproovServiceError"];
         // Process error type
-        if([errorType isEqualToString:@"ApproovTokenFetchStatusRejected"]){
+        if([error.userInfo objectForKey:@"RejectionReasons"]){
             // failure due to the attestation being rejected, the userInfo dictionary in the error object may contain ARC and rejectionReasons keys that may be used to present information to the user
             //(note rejectionReasons and ARC are only available if the feature is enabled, otherwise it is always an empty string)
-        } else if (([errorType isEqualToString:@"ApproovTokenFetchStatusNoNetwork"]) ||
-                    ([errorType isEqualToString:@"ApproovTokenFetchStatusPoorNetwork"]) ||
-                    ([errorType isEqualToString:@" ApproovTokenFetchStatusMITMDetected"])){
+        } else if (([error.userInfo objectForKey:@"RetryLastOperation"])){
             // failure due to a potentially temporary networking issue, allow for a user initiated retry
         } else {
             // a more permanent error, see error.userInfo dictionary

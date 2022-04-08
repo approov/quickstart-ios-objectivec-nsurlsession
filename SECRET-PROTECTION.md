@@ -134,25 +134,21 @@ secret = [ApproovService fetchSecureString:key newDefinition:newDef error:&error
 if (error != nil) {
     // Test for the presence of ApproovServiceError
     if ([error.userInfo objectForKey:@"ApproovServiceError"]){
-        NSString* errorType = [error.userInfo objectForKey:@"ApproovServiceError"];
         // Process error type
-        if([errorType isEqualToString:@"ApproovTokenFetchStatusRejected"]){
+        if([error.userInfo objectForKey:@"RejectionReasons"]){
             // failure due to the attestation being rejected, the userInfo dictionary in the error object may contain ARC and rejectionReasons keys that may be used to present information to the user
             //(note rejectionReasons and ARC are only available if the feature is enabled, otherwise it is always an empty string)
-        } else if (([errorType isEqualToString:@"ApproovTokenFetchStatusNoNetwork"]) ||
-                    ([errorType isEqualToString:@"ApproovTokenFetchStatusPoorNetwork"]) ||
-                    ([errorType isEqualToString:@" ApproovTokenFetchStatusMITMDetected"])){
+        } else if (([error.userInfo objectForKey:@"RetryLastOperation"])){
             // failure due to a potentially temporary networking issue, allow for a user initiated retry
         } else {
             // a more permanent error, see error.userInfo dictionary
         }
+    }
+} else {
+            // a more permanent error, see error.userInfo dictionary
+        }
         
         // use `secret` as required, but never cache or store its value - note `secret` will be null if the provided key is not defined
-
-    } else {
-        // a more permanent error, see error.userInfo dictionary
-    }
-}
 ```
 
 Note that this method may make networking calls so should never be called from the main UI thread. Any failure during the call should populate the `NSError` variable provided with failure reason in the `ApproovServiceError` key.  If `ApproovTokenFetchStatusRejected` is shown then the app has not passed Approov attestation and some user feedback should be provided. Additionally, the `NSError` might contain details of the rejection reason specific to the current device and you could check them by quirying the dictionary keys `RejectionReasons` and `ARC`. The `RetryLastOperation` key suggests if it might be possible to retry again the last operation in case of failure.
@@ -163,7 +159,7 @@ This method is also useful for providing runtime secrets protection when the val
 If you wish to reduce the latency associated with substituting the first secret, then make this call immediately after creating `ApproovService`:
 
 ```ObjectiveC
-[ApproovService prefetch:&error];
+[ApproovService prefetch];
 ```
 
 This initiates the process of fetching the required information as a background task, so that it is available immediately when subsequently needed. Note the information will automatically expire after approximately 5 minutes.
@@ -177,14 +173,11 @@ NSError* error;
 if (error != nil) {
     // Test for the presence of ApproovServiceError
     if ([error.userInfo objectForKey:@"ApproovServiceError"]){
-        NSString* errorType = [error.userInfo objectForKey:@"ApproovServiceError"];
         // Process error type
-        if([errorType isEqualToString:@"ApproovTokenFetchStatusRejected"]){
+        if([error.userInfo objectForKey:@"RejectionReasons"]){
             // failure due to the attestation being rejected, the userInfo dictionary in the error object may contain ARC and rejectionReasons keys that may be used to present information to the user
             //(note rejectionReasons and ARC are only available if the feature is enabled, otherwise it is always an empty string)
-        } else if (([errorType isEqualToString:@"ApproovTokenFetchStatusNoNetwork"]) ||
-                    ([errorType isEqualToString:@"ApproovTokenFetchStatusPoorNetwork"]) ||
-                    ([errorType isEqualToString:@" ApproovTokenFetchStatusMITMDetected"])){
+        } else if (([error.userInfo objectForKey:@"RetryLastOperation"])){
             // failure due to a potentially temporary networking issue, allow for a user initiated retry
         } else {
             // a more permanent error, see error.userInfo dictionary

@@ -31,7 +31,7 @@ ApproovURLSession* defaultSession = [ApproovURLSession sessionWithConfiguration:
 ```
 
 For API domains that are configured to be protected with an Approov token, this adds the `Approov-Token` header and pins the connection. This may also substitute header values when using secret protection.
-Please note on the above code, the `ApproovService` is instantiated and the error condition is checked for and only in case of no failure, the netwok session and later actual requests are performed. Failure to initialise the `ApproovService` should cancel any network requests since lack of initialization is generaly considered fatal.
+Please note on the above code, the `ApproovService` is instantiated and the error condition is checked for and only in case of no failure, the netwok session and later actual requests are performed. Failure to initialise the `ApproovService` should cancel any network requests since lack of initialization is generally considered fatal.
 
 ## ERROR MESSAGES
 The `ApproovService` adds additional information to the error parameter passed as argument in all the `ApproovURLSession` network calls. The additional information allows further troubleshooting and suggest if a retry should be attempted after certain time or user interaction has been requested. The error key pair values used by the `ApproovService` are:
