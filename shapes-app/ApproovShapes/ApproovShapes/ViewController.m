@@ -17,7 +17,7 @@
 
 #import "ViewController.h"
 // *** UNCOMMENT THE LINE BELOW TO USE APPROOV ***
-//#import "ApproovURLSession.h"
+#import "ApproovURLSession.h"
 
 @interface ViewController ()
 @property (weak, nonatomic) IBOutlet UIImageView *statusImageView;
@@ -26,14 +26,19 @@
 @end
 
 @implementation ViewController
+// Hello URL endpoint
+NSString* helloEndpoint = @"https://shapes.approov.io/v1/hello";
+// Shapes URL endpoint
+//NSString* shapesEndpoint = @"https://shapes.approov.io/v1/shapes";
+//*** UNCOMMENT THE LINE BELOW FOR APPROOV BACKEND THAT CHECKS TOKENS
+NSString* shapesEndpoint = @"https://shapes.approov.io/v3/shapes";
 // *** CHANGE THE LINE BELOW FOR APPROOV USING SECRET PROTECTION TO `shapes_api_key_placeholder` ***
 NSString* apiSecretKey = @"yXClypapWNHIifHUWmBIyPFAm";
+// *** COMMENT THE LINE BELOW TO USE APPROOV
 NSURLSession* defaultSession;
 // *** UNCOMMENT THE LINES BELOW TO USE APPROOV
-/*
-ApproovService *approovService;
-ApproovURLSession* defaultSession;
- */
+//ApproovURLSession* defaultSession;
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     // *** COMMENT THE LINE BELOW TO USE APPROOV
@@ -41,7 +46,7 @@ ApproovURLSession* defaultSession;
     // *** UNCOMMENT THE LINES BELOW TO USE APPROOV
     /*
     NSError* error;
-    approovService = [ApproovService initialize:@"<enter-you-config-string-here>" error:&error];
+    [ApproovService initialize:@"<enter-you-config-string-here>" errorMessage:&error];
     if (error != nil) {
         dispatch_async(dispatch_get_main_queue(), ^{
             self.statusImageView.image = [UIImage imageNamed:@"approov"];
@@ -49,11 +54,11 @@ ApproovURLSession* defaultSession;
         });
     }
     defaultSession = [ApproovURLSession sessionWithConfiguration:NSURLSessionConfiguration.defaultSessionConfiguration];
-     */
+    */
 }
 // check unprotected hello endpoint
 - (IBAction)checkHello:(id)sender {
-    NSURL* helloURL = [[NSURL alloc] initWithString:@"https://shapes.approov.io/v1/hello"];
+    NSURL* helloURL = [[NSURL alloc] initWithString:helloEndpoint];
     dispatch_async(dispatch_get_main_queue(), ^{
         self.statusImageView.image = [UIImage imageNamed:@"approov"];
         self.statusTextView.text = @"Checking connectivity...";
@@ -96,22 +101,19 @@ ApproovURLSession* defaultSession;
 
 // check shapes endpoint
 - (IBAction)checkShape:(id)sender {
-    // *** COMMENT THE LINE BELOW TO USE APPROOV
-    NSURL* shapesURL = [[NSURL alloc] initWithString:@"https://shapes.approov.io/v1/shapes"];
-    // *** UNCOMMENT THE LINE BELOW TO USE APPROOV
-    // NSURL* shapesURL = [[NSURL alloc] initWithString:@"https://shapes.approov.io/v3/shapes"];
+    NSURL* shapesURL = [[NSURL alloc] initWithString:shapesEndpoint];
     dispatch_async(dispatch_get_main_queue(), ^{
         self.statusImageView.image = [UIImage imageNamed:@"approov"];
         self.statusTextView.text = @"Getting a shape...";
     });
     
     // *** UNCOMMENT THE LINE BELOW FOR APPROOV USING SECRET PROTECTION ***
-    //[[ApproovService shared] addSubstitutionHeader:@"Api-Key" requiredPrefix:nil];
+    //[ApproovService addSubstitutionHeader:@"Api-Key" requiredPrefix:nil];
 
     // We add the Api-Key to the request headers
     NSURLRequest* request = [[NSURLRequest alloc] initWithURL:shapesURL];
     [request setValue:apiSecretKey forKey:@"Api-Key"];
-    NSURLSessionDataTask* task = [defaultSessiondataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error){
+    NSURLSessionDataTask* task = [defaultSession dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error){
         NSString* message;
         UIImage* image;
         
