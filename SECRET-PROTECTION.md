@@ -67,14 +67,14 @@ approov registration -add YourApp.ipa
 ```
 Note, on Windows you need to substitute \ for / in the above command.
 
-> **IMPORTANT:** The registration takes up to 30 seconds to propagate across the Approov Cloud Infrastructure, therefore don't try to run the app again before this time as elapsed. During development of your app you can ensure it [always passes](https://approov.io/docs/latest/approov-usage-documentation/#adding-a-device-security-policy) on your device to not have to register the APK each time you modify it.
+> **IMPORTANT:** The registration takes up to 30 seconds to propagate across the Approov Cloud Infrastructure, therefore don't try to run the app again before this time has elapsed. During development of your app you can ensure it [always passes](https://approov.io/docs/latest/approov-usage-documentation/#adding-a-device-security-policy) on your device to not have to register the APK each time you modify it.
 
 [Managing Registrations](https://approov.io/docs/latest/approov-usage-documentation/#managing-registrations) provides more details for app registrations, especially for releases to the Apple Store. Of particular interest to iOS is the use of codesigning certificates that belong to different team identifiers.
 
 
-[Bitcode](https://approov.io/docs/v3.0/approov-usage-documentation/#bitcode-mode-management) is supported by Approov but requires command line option to be specified when downloading SDKs and registering apps.
+[Bitcode](https://approov.io/docs/latest/approov-usage-documentation/#bitcode-mode-management) is supported by Approov but requires command line option to be specified when downloading SDKs and registering apps.
 
-```Bash
+```
 approov registration -add YourApp.ipa -bitcode
 ```
 
@@ -111,7 +111,7 @@ This causes the `Bearer` prefix to be stripped before doing the lookup for the s
 ### App Instance Secure Strings
 As shown, it is possible to set predefined secret strings that are only communicated to passing apps. It is also possible to get and set secure string values for each app instance. These are never communicated to the Approov cloud service, but are encrypted at rest using keys which can only be retrieved by passing apps.
 
-Use the the following method in `ApproovService`:
+Use the following method in `ApproovService`:
 
 ```ObjectiveC
 -(NSString*)fetchSecureString:(NSString*)key newDefinition:(NSString*)newDef error:(NSError**)error
