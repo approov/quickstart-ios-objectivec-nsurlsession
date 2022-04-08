@@ -52,7 +52,7 @@ You can add up to 16 different secret values to be substituted in this way.
 If the secret value is provided on the header `<secret-header>` then it is necessary to notify the `ApproovService` that the header is subject to substitution. You do this by making the call once, after initialization:
 
 ```ObjectiveC
-[approovService addSubstitutionHeader:@"<secret-header>" requiredPrefix:nil];
+[ApproovService addSubstitutionHeader:@"<secret-header>" requiredPrefix:nil];
 ```
 
 With this in place, network calls using `ApproovURLSession` should replace the `<secret-placeholder>` with the `<secret-value>` as required when the app passes attestation.  Since the mapping lookup is performed on the placeholder value you have the flexibility of providing different secrets on different API calls, even if they passed with the same header name.
@@ -103,7 +103,7 @@ The quickstart also provides the following additional methods:
 In some cases the value to be substituted on a header may be prefixed by some fixed string. A common case is the presence of `Bearer` included in an authorization header to indicate the use of a bearer token. In this case you can specify a prefix as follows:
 
 ```ObjectiveC
-[[ApproovService shared] addSubstitutionHeader:@"Authorization" requiredPrefix:@"Bearer "];
+[ApproovService addSubstitutionHeader:@"Authorization" requiredPrefix:@"Bearer "];
 ```
 
 This causes the `Bearer` prefix to be stripped before doing the lookup for the substitution, and the `Bearer` prefix added to the actual secret value as part of the substitution.
@@ -114,10 +114,46 @@ As shown, it is possible to set predefined secret strings that are only communic
 Use the following method in `ApproovService`:
 
 ```ObjectiveC
--(NSString*)fetchSecureString:(NSString*)key newDefinition:(NSString*)newDef error:(NSError**)error
++(NSString*)fetchSecureString:(NSString*)key newDefinition:(NSString*)newDef error:(NSError**)error
 ```
 
-to lookup a secure string with the given `key`, returning `nil` if it is not defined. Note that you should never cache this value in your code. Approov does the caching for you in a secure way. You may define a new value for the `key` by passing a new value in `newDef` rather than `nil`. An empty string `newDef` is used to delete the secure string.
+to lookup a secure string with the given `key`, returning `nil` if it is not defined. Note that you should never cache this value in your code. Approov does the caching for you in a secure way. You may define a new value for the `key` by passing a new value in `newDefinition` rather than `nil`. An empty string `newDefinition` is used to delete the secure string.
+
+Here is an example of using the required method in ApproovService:
+
+```ObjectiveC
+#import "ApproovURLSession.h"
+
+....
+NSString* key;
+NSString* newDef;
+NSString* secret;
+NSError* error;
+// define key and newDefinition here
+secret = [ApproovService fetchSecureString:key newDefinition:newDef error:&error];
+if (error != nil) {
+    // Test for the presence of ApproovServiceError
+    if ([error.userInfo objectForKey:@"ApproovServiceError"]){
+        NSString* errorType = [error.userInfo objectForKey:@"ApproovServiceError"];
+        // Process error type
+        if([errorType isEqualToString:@"ApproovTokenFetchStatusRejected"]){
+            // failure due to the attestation being rejected, the userInfo dictionary in the error object may contain ARC and rejectionReasons keys that may be used to present information to the user
+            //(note rejectionReasons and ARC are only available if the feature is enabled, otherwise it is always an empty string)
+        } else if (([errorType isEqualToString:@"ApproovTokenFetchStatusNoNetwork"]) ||
+                    ([errorType isEqualToString:@"ApproovTokenFetchStatusPoorNetwork"]) ||
+                    ([errorType isEqualToString:@" ApproovTokenFetchStatusMITMDetected"])){
+            // failure due to a potentially temporary networking issue, allow for a user initiated retry
+        } else {
+            // a more permanent error, see error.userInfo dictionary
+        }
+        
+        // use `secret` as required, but never cache or store its value - note `secret` will be null if the provided key is not defined
+
+    } else {
+        // a more permanent error, see error.userInfo dictionary
+    }
+}
+```
 
 Note that this method may make networking calls so should never be called from the main UI thread. Any failure during the call should populate the `NSError` variable provided with failure reason in the `ApproovServiceError` key.  If `ApproovTokenFetchStatusRejected` is shown then the app has not passed Approov attestation and some user feedback should be provided. Additionally, the `NSError` might contain details of the rejection reason specific to the current device and you could check them by quirying the dictionary keys `RejectionReasons` and `ARC`. The `RetryLastOperation` key suggests if it might be possible to retry again the last operation in case of failure.
 
@@ -127,7 +163,38 @@ This method is also useful for providing runtime secrets protection when the val
 If you wish to reduce the latency associated with substituting the first secret, then make this call immediately after creating `ApproovService`:
 
 ```ObjectiveC
-[ApproovService prefetch];
+[ApproovService prefetch:&error];
 ```
 
 This initiates the process of fetching the required information as a background task, so that it is available immediately when subsequently needed. Note the information will automatically expire after approximately 5 minutes.
+
+### Prechecking
+You may wish to do an early check in your to present a warning to the user if the app is not going to be able to access secrets because it fails the attestation process. Here is an example of calling the appropriate method in `ApproovService`:
+
+```ObjectiveC
+NSError* error;
+[ApproovService precheck:&error];
+if (error != nil) {
+    // Test for the presence of ApproovServiceError
+    if ([error.userInfo objectForKey:@"ApproovServiceError"]){
+        NSString* errorType = [error.userInfo objectForKey:@"ApproovServiceError"];
+        // Process error type
+        if([errorType isEqualToString:@"ApproovTokenFetchStatusRejected"]){
+            // failure due to the attestation being rejected, the userInfo dictionary in the error object may contain ARC and rejectionReasons keys that may be used to present information to the user
+            //(note rejectionReasons and ARC are only available if the feature is enabled, otherwise it is always an empty string)
+        } else if (([errorType isEqualToString:@"ApproovTokenFetchStatusNoNetwork"]) ||
+                    ([errorType isEqualToString:@"ApproovTokenFetchStatusPoorNetwork"]) ||
+                    ([errorType isEqualToString:@" ApproovTokenFetchStatusMITMDetected"])){
+            // failure due to a potentially temporary networking issue, allow for a user initiated retry
+        } else {
+            // a more permanent error, see error.userInfo dictionary
+        }
+        
+        // use `secret` as required, but never cache or store its value - note `secret` will be null if the provided key is not defined
+
+    }
+}
+```
+
+
+> Note you should NEVER use this as the only form of protection in your app, this is simply to provide an early indication of failure to your users as a convenience. You must always also have secrets essential to the operation of your app, or access to backend API services, protected with Approov. This is because, although the test itself is heavily secured, it may be possible for an attacker to bypass its result or prevent it being called at all. When the app is dependent on the secrets protected, it is not possible for them to be obtained at all without passing the attestation.

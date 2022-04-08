@@ -35,8 +35,8 @@ The quickstart also provides the following additional methods:
 The default header name of `Approov-Token` can be changed as follows:
 
 ```ObjectiveC
-[[ApproovService shared] setApproovTokenHeader:@"Authorization"];
-[[ApproovService shared] setApproovTokenPrefix:@"Bearer "];
+[ApproovService setApproovTokenHeader:@"Authorization"];
+[ApproovService setApproovTokenPrefix:@"Bearer "];
 ```
 
 The first call changes is the new header name and the second a prefix to be added to the Approov token. This is primarily for integrations where the Approov Token JWT might need to be prefixed with `Bearer` and passed in the `Authorization` header.
@@ -59,3 +59,49 @@ If you wish to reduce the latency associated with fetching the first Approov tok
 ```
 
 This initiates the process of fetching an Approov token as a background task, so that a cached token is available immediately when subsequently needed, or at least the fetch time is reduced. Note that there is no point in performing a prefetch if you are using token binding.
+
+### Prechecking
+You may wish to do an early check in your to present a warning to the user if the app is not going to be able to obtain valid Approov tokens because it fails the attestation process. To do this you first need to enable the [Secure Strings](https://approov.io/docs/latest/approov-usage-documentation/#secure-strings) feature:
+
+```
+approov secstrings -setEnabled
+```
+
+> Note that this command requires an [admin role](https://approov.io/docs/latest/approov-usage-documentation/#account-access-roles).
+
+Here is an example of calling the appropriate method in `ApproovService`:
+
+```ObjectiveC
+NSError* error;
+[ApproovService precheck:&error];
+if (error != nil) {
+    // Test for the presence of ApproovServiceError
+    if ([error.userInfo objectForKey:@"ApproovServiceError"]){
+        NSString* errorType = [error.userInfo objectForKey:@"ApproovServiceError"];
+        // Process error type
+        if([errorType isEqualToString:@"ApproovTokenFetchStatusRejected"]){
+            // failure due to the attestation being rejected, the userInfo dictionary in the error object may contain ARC and rejectionReasons keys that may be used to present information to the user
+            //(note rejectionReasons and ARC are only available if the feature is enabled, otherwise it is always an empty string)
+        } else if (([errorType isEqualToString:@"ApproovTokenFetchStatusNoNetwork"]) ||
+                    ([errorType isEqualToString:@"ApproovTokenFetchStatusPoorNetwork"]) ||
+                    ([errorType isEqualToString:@" ApproovTokenFetchStatusMITMDetected"])){
+            // failure due to a potentially temporary networking issue, allow for a user initiated retry
+        } else {
+            // a more permanent error, see error.userInfo dictionary
+        }
+        
+        // use `secret` as required, but never cache or store its value - note `secret` will be null if the provided key is not defined
+
+    }
+}
+```
+
+> Note you should NEVER use this as the only form of protection in your app, this is simply to provide an early indication of failure to your users as a convenience. You must always also have APIs protected with Approov tokens that are essential to the operation of your app. This is because, although the test itself is heavily secured, it may be possible for an attacker to bypass its result or prevent it being called at all. When the app is dependent Approov protected APIs they can never be accessed without passing the attestation, since it is not possible for an attacker to create a validly signed Approov token.
+
+If you wish to provide more direct feedback with the [Rejection Reasons](https://approov.io/docs/latest/approov-usage-documentation/#rejection-reasons) feature use:
+
+```
+approov policy -setRejectionReasons on
+```
+
+> Note that this command requires an [admin role](https://approov.io/docs/latest/approov-usage-documentation/#account-access-roles).
