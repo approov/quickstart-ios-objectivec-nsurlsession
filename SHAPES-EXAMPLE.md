@@ -187,4 +187,4 @@ Run the app again without making any changes to the app and press the `Get Shape
     <img src="readme-images/shapes-good.png" width="256" title="Shapes Good">
 </p>
 
-This means that the registered app is able to access the API key, even though it is no longer embedded in the app configuration, and provide it to the shapes request.
+This means that the registered app is able to access the API key, even though it is no longer embedded in the app code, and provide it to the shapes request.
