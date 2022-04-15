@@ -29,9 +29,10 @@
 // Hello URL endpoint
 NSString* helloEndpoint = @"https://shapes.approov.io/v1/hello";
 // Shapes URL endpoint
-//NSString* shapesEndpoint = @"https://shapes.approov.io/v1/shapes";
-//*** UNCOMMENT THE LINE BELOW FOR APPROOV BACKEND THAT CHECKS TOKENS
-NSString* shapesEndpoint = @"https://shapes.approov.io/v3/shapes";
+//*** COMMENT THE LINE BELOW FOR APPROOV USING TOKEN PROTECTION
+NSString* shapesEndpoint = @"https://shapes.approov.io/v1/shapes";
+//*** UNCOMMENT THE LINE BELOW FOR APPROOV USING TOKEN PROTECTION
+//NSString* shapesEndpoint = @"https://shapes.approov.io/v3/shapes";
 // *** CHANGE THE LINE BELOW FOR APPROOV USING SECRET PROTECTION TO `shapes_api_key_placeholder` ***
 NSString* apiSecretKey = @"yXClypapWNHIifHUWmBIyPFAm";
 // *** COMMENT THE LINE BELOW TO USE APPROOV
