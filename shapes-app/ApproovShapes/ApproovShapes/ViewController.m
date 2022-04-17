@@ -112,8 +112,8 @@ NSURLSession* defaultSession;
     //[ApproovService addSubstitutionHeader:@"Api-Key" requiredPrefix:nil];
 
     // We add the Api-Key to the request headers
-    NSURLRequest* request = [[NSURLRequest alloc] initWithURL:shapesURL];
-    [request setValue:apiSecretKey forKey:@"Api-Key"];
+    NSMutableURLRequest* request = [[NSMutableURLRequest alloc] initWithURL:shapesURL];
+    [request setValue:apiSecretKey forHTTPHeaderField:@"Api-Key"];
     NSURLSessionDataTask* task = [defaultSession dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error){
         NSString* message;
         UIImage* image;
