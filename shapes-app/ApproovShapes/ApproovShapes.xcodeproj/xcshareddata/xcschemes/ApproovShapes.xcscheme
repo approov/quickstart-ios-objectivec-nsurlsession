@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "176E7C5724EE7FA900BF3945"
-               BuildableName = "ShapesApp.app"
+               BuildableName = "ApproovShapes.app"
                BlueprintName = "ShapesApp"
                ReferencedContainer = "container:ApproovShapes.xcodeproj">
             </BuildableReference>
@@ -45,7 +45,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "176E7C5724EE7FA900BF3945"
-            BuildableName = "ShapesApp.app"
+            BuildableName = "ApproovShapes.app"
             BlueprintName = "ShapesApp"
             ReferencedContainer = "container:ApproovShapes.xcodeproj">
          </BuildableReference>
@@ -62,7 +62,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "176E7C5724EE7FA900BF3945"
-            BuildableName = "ShapesApp.app"
+            BuildableName = "ApproovShapes.app"
             BlueprintName = "ShapesApp"
             ReferencedContainer = "container:ApproovShapes.xcodeproj">
          </BuildableReference>
