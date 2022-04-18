@@ -31,7 +31,7 @@ NSString* helloEndpoint = @"https://shapes.approov.io/v1/hello";
 // Header name holding Api-Key value
 NSString* apiKeyHeader = @"Api-Key";
 // Shapes URL endpoint
-NSString* shapesEndpoint = @"https://shapes.approov.io/v1/shapes";
+NSString* shapesEndpoint = @"https://shapes.approov.io/v2/shapes";
 //*** UNCOMMENT THE LINE BELOW FOR APPROOV BACKEND THAT CHECKS TOKENS
 //NSString* shapesEndpoint = @"https://shapes.approov.io/v3/shapes";
 // *** CHANGE THE LINE BELOW FOR APPROOV USING SECRET PROTECTION TO `shapes_api_key_placeholder` ***
@@ -44,7 +44,7 @@ NSURLSession* defaultSession;
 - (void)viewDidLoad {
     [super viewDidLoad];
     // *** COMMENT THE LINE BELOW TO USE APPROOV
-    //defaultSession = [NSURLSession sessionWithConfiguration:NSURLSessionConfiguration.defaultSessionConfiguration];
+    defaultSession = [NSURLSession sessionWithConfiguration:NSURLSessionConfiguration.defaultSessionConfiguration];
     // *** UNCOMMENT THE LINES BELOW TO USE APPROOV
     /*
     NSError* error;
