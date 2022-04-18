@@ -28,13 +28,15 @@
 @implementation ViewController
 // Hello URL endpoint
 NSString* helloEndpoint = @"https://shapes.approov.io/v1/hello";
+// Header name holding Api-Key value
+NSString* apiKeyHeader = @"Api-Key";
 // Shapes URL endpoint
-//NSString* shapesEndpoint = @"https://shapes.approov.io/v1/shapes";
+NSString* shapesEndpoint = @"https://shapes.approov.io/v1/shapes";
 //*** UNCOMMENT THE LINE BELOW FOR APPROOV BACKEND THAT CHECKS TOKENS
-NSString* shapesEndpoint = @"https://shapes.approov.io/v3/shapes";
+//NSString* shapesEndpoint = @"https://shapes.approov.io/v3/shapes";
 // *** CHANGE THE LINE BELOW FOR APPROOV USING SECRET PROTECTION TO `shapes_api_key_placeholder` ***
 NSString* apiSecretKey = @"yXClypapWNHIifHUWmBIyPFAm";
-// *** COMMENT THE LINE BELOW TO USE APPROOV
+// *** COMMENT THE LINE BELOW TO USE APPROOV yXClypapWNHIifHUWmBIyPFAm
 NSURLSession* defaultSession;
 // *** UNCOMMENT THE LINES BELOW TO USE APPROOV
 //ApproovURLSession* defaultSession;
@@ -42,11 +44,11 @@ NSURLSession* defaultSession;
 - (void)viewDidLoad {
     [super viewDidLoad];
     // *** COMMENT THE LINE BELOW TO USE APPROOV
-    defaultSession = [NSURLSession sessionWithConfiguration:NSURLSessionConfiguration.defaultSessionConfiguration];
+    //defaultSession = [NSURLSession sessionWithConfiguration:NSURLSessionConfiguration.defaultSessionConfiguration];
     // *** UNCOMMENT THE LINES BELOW TO USE APPROOV
     /*
     NSError* error;
-    [ApproovService initialize:@"<enter-you-config-string-here>" errorMessage:&error];
+    [ApproovService initialize:@"<your config string here>" errorMessage:&error];
     if (error != nil) {
         dispatch_async(dispatch_get_main_queue(), ^{
             self.statusImageView.image = [UIImage imageNamed:@"approov"];
@@ -58,12 +60,16 @@ NSURLSession* defaultSession;
 }
 // check unprotected hello endpoint
 - (IBAction)checkHello:(id)sender {
+    
     NSURL* helloURL = [[NSURL alloc] initWithString:helloEndpoint];
     dispatch_async(dispatch_get_main_queue(), ^{
         self.statusImageView.image = [UIImage imageNamed:@"approov"];
         self.statusTextView.text = @"Checking connectivity...";
     });
-    NSURLRequest* request = [[NSURLRequest alloc] initWithURL:helloURL];
+    NSMutableURLRequest* request = [[NSMutableURLRequest alloc] initWithURL:helloURL];
+    // This sets the Api-Key header in the request if not present
+    if ([request allHTTPHeaderFields][apiKeyHeader] == nil)
+        [request addValue:apiSecretKey forHTTPHeaderField:apiKeyHeader];
     NSURLSessionDataTask* task = [defaultSession dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error){
         NSString* message;
         UIImage* image;
@@ -108,11 +114,13 @@ NSURLSession* defaultSession;
     });
     
     // *** UNCOMMENT THE LINE BELOW FOR APPROOV USING SECRET PROTECTION ***
-    //[ApproovService addSubstitutionHeader:@"Api-Key" requiredPrefix:nil];
+    //[ApproovService addSubstitutionHeader:@"Api-Key" requiredPrefix:@""];
 
     // We add the Api-Key to the request headers
-    NSURLRequest* request = [[NSURLRequest alloc] initWithURL:shapesURL];
-    [request setValue:apiSecretKey forKey:@"Api-Key"];
+    NSMutableURLRequest* request = [[NSMutableURLRequest alloc] initWithURL:shapesURL];
+    // This sets the Api-Key header in the request if not present
+    if ([request allHTTPHeaderFields][apiKeyHeader] == nil)
+        [request addValue:apiSecretKey forHTTPHeaderField:apiKeyHeader];
     NSURLSessionDataTask* task = [defaultSession dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error){
         NSString* message;
         UIImage* image;
@@ -124,6 +132,7 @@ NSURLSession* defaultSession;
             if(code == 200){
                 // successful http response
                 message = @"200: Approoved!";
+                NSLog(@"Data: %@", [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
                 // unmarshal the JSON response
                 NSError* error;
                 NSDictionary* jsonDict = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:&error];
