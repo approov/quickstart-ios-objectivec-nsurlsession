@@ -17,7 +17,7 @@
 
 #import "ViewController.h"
 // *** UNCOMMENT THE LINE BELOW TO USE APPROOV ***
-#import "ApproovURLSession.h"
+//#import "ApproovURLSession.h"
 
 @interface ViewController ()
 @property (weak, nonatomic) IBOutlet UIImageView *statusImageView;
