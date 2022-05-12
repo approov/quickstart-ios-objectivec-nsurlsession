@@ -13,12 +13,23 @@ The Approov integration is available via [`CocoaPods`](https://cocoapods.org/). 
 target 'YourApplication' do
     use_frameworks!
     platform :ios, '10.0'
-    pod 'approov-service-nsurlsession', '3.0.0', :source => "https://github.com/approov/approov-service-nsurlsession.git"
+    pod 'approov-service-nsurlsession', '3.0.1', :source => "https://github.com/approov/approov-service-nsurlsession.git"
     pod 'approov-ios-sdk', '3.0.0', :source => "https://github.com/approov/approov-ios-sdk.git"
 end
 ```
 
 This package is actually an open source wrapper layer that allows you to easily use Approov with `NSURLSession`. This has a further dependency to the closed source [Approov SDK](https://github.com/approov/approov-ios-sdk).
+
+Please note, that if you application requires `bitcode` support, you will need to reference different versions of the above packages. An example `Podfile-bitcode` is available in the `shapes-app/ApproovShapes` directory:
+
+```
+target 'ShapesApp' do
+    use_frameworks!
+    platform :ios, '10.0'
+    pod 'approov-service-nsurlsession', '3.0.1-bitcode', :source => "https://github.com/approov/approov-service-nsurlsession.git"
+    pod 'approov-ios-sdk-bitcode', '3.0.0', :source => "https://github.com/approov/approov-ios-sdk-bitcode.git"
+end
+```
 
 ## USING APPROOV NSURLSESSION
 The `ApproovURLSession` class mimics the interface of the `NSURLSession` class provided by Apple but includes an additional ApproovSDK attestation call. The simplest way to use the `ApproovURLSession` is to find and replace all the `NSURLSession` with `ApproovURLSession`.
@@ -32,6 +43,23 @@ ApproovURLSession* defaultSession = [ApproovURLSession sessionWithConfiguration:
 
 For API domains that are configured to be protected with an Approov token, this adds the `Approov-Token` header and pins the connection. This may also substitute header values when using secret protection.
 Please note on the above code, the `ApproovService` is instantiated and the error condition is checked for and only in case of no failure, the netwok session and later actual requests are performed. Failure to initialise the `ApproovService` should cancel any network requests since lack of initialization is generally considered fatal.
+
+Please note, that the `ApproovURLSession` implementation supports network delegates in much the same way the `NSURLSession` class does with one exception: we do not support a task specific delegate since we already implement a session delegate. Unfortunately, this means if you need to use a task specific delegate in order to provide specific authentication, like this:
+
+```ObjectiveC
+- (void)URLSession:(NSURLSession *)session
+              task:(NSURLSessionTask *)task
+didReceiveChallenge:(NSURLAuthenticationChallenge *)challenge
+ completionHandler:(void (^)(NSURLSessionAuthChallengeDisposition disposition, NSURLCredential *credential))completionHandler;
+```
+
+it will not be called. Instead, you can use the session level delegate:
+
+```ObjectiveC
+- (void)URLSession:(NSURLSession *)session
+didReceiveChallenge:(NSURLAuthenticationChallenge *)challenge
+ completionHandler:(void (^)(NSURLSessionAuthChallengeDisposition disposition, NSURLCredential *credential))completionHandler
+```
 
 ## ERROR MESSAGES
 The `ApproovService` adds additional information to the error parameter passed as argument in all the `ApproovURLSession` network calls. The additional information allows further troubleshooting and suggest if a retry should be attempted after certain time or user interaction has been requested. The error key pair values used by the `ApproovService` are:
