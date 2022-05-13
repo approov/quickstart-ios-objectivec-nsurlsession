@@ -20,17 +20,6 @@ end
 
 This package is actually an open source wrapper layer that allows you to easily use Approov with `NSURLSession`. This has a further dependency to the closed source [Approov SDK](https://github.com/approov/approov-ios-sdk).
 
-Please note, that if you application requires `bitcode` support, you will need to reference different versions of the above packages. An example `Podfile-bitcode` is available in the `shapes-app/ApproovShapes` directory:
-
-```
-target 'ShapesApp' do
-    use_frameworks!
-    platform :ios, '10.0'
-    pod 'approov-service-nsurlsession', '3.0.1-bitcode', :source => "https://github.com/approov/approov-service-nsurlsession.git"
-    pod 'approov-ios-sdk-bitcode', '3.0.0', :source => "https://github.com/approov/approov-ios-sdk-bitcode.git"
-end
-```
-
 ## USING APPROOV NSURLSESSION
 The `ApproovURLSession` class mimics the interface of the `NSURLSession` class provided by Apple but includes an additional ApproovSDK attestation call. The simplest way to use the `ApproovURLSession` is to find and replace all the `NSURLSession` with `ApproovURLSession`.
 
@@ -83,3 +72,15 @@ To actually protect your APIs there are some further steps. Approov provides two
 * [SECRETS PROTECTION](https://github.com/approov/quickstart-ios-objectivec-nsurlsession/blob/master/SECRETS-PROTECTION.md): If you do not control the backend API(s) being protected, and are therefore unable to modify it to check Approov tokens, you can use this approach instead. It allows app secrets, and API keys, to be protected so that they no longer need to be included in the built code and are only made available to passing apps at runtime.
 
 Note that it is possible to use both approaches side-by-side in the same app, in case your app uses a mixture of 1st and 3rd party APIs.
+
+## BITCODE SUPPORT
+Please note, that if you application requires `bitcode` support, you will need to reference different versions of the packages in the `Podfile`:
+
+```
+target 'YourApplication' do
+    use_frameworks!
+    platform :ios, '10.0'
+    pod 'approov-service-nsurlsession', '3.0.1-bitcode', :source => "https://github.com/approov/approov-service-nsurlsession.git"
+    pod 'approov-ios-sdk-bitcode', '3.0.0', :source => "https://github.com/approov/approov-ios-sdk-bitcode.git"
+end
+```
