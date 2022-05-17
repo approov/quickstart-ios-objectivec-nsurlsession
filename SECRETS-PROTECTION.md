@@ -92,8 +92,7 @@ approov policy -setRejectionReasons on
 You will then be able to use the `rejectionReasons` key in the `NSError` returned from the network call to obtain a comma separated list of [device properties](https://approov.io/docs/latest/approov-usage-documentation/#device-properties) responsible for causing the rejection.
 
 ## FURTHER OPTIONS
-
-See [Getting Started With Approov](https://approov.io/docs/latest/approov-usage-documentation/#getting-started-with-approov) for information about additional Approov features you may wish to try.
+See [Exploring Other Approov Features](https://approov.io/docs/latest/approov-usage-documentation/#exploring-other-approov-features) for information about additional Approov features you may wish to try.
 
 The quickstart also provides the following additional methods:
 
