@@ -33,8 +33,6 @@ approov registration -add YourApp.ipa -bitcode
 ## FURTHER OPTIONS
 See [Exploring Other Approov Features](https://approov.io/docs/latest/approov-usage-documentation/#exploring-other-approov-features) for information about additional Approov features you may wish to try.
 
-The quickstart also provides the following additional methods:
-
 ### Changing Approov Token Header Name
 The default header name of `Approov-Token` can be changed as follows:
 
