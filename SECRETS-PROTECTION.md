@@ -1,12 +1,12 @@
-# Secret Protection
-You should use this option if you wish to protect access to 3rd party or managed APIs where you are not able to add an Approov token check to the backend. This allows client secrets, or API keys, used for access to be protected with Approov. Rather than build secrets into an app where they might be reverse engineered, they are only provided at runtime by Approov for apps that are pass Approov attestation. This substantially improves your protection and prevents these secrets being abused by attackers. Where you are able to modify the backend we recommend you use Token Protection for further enchanced flexibility and security.
+# Secrets Protection
+You should use this option if you wish to protect access to 3rd party or managed APIs where you are not able to add an Approov token check to the backend. This allows client secrets, or API keys, used for access to be protected with Approov. Rather than build secrets into an app where they might be reverse engineered, they are only provided at runtime by Approov for apps that are pass Approov attestation. This substantially improves your protection and prevents these secrets being abused by attackers. Where you are able to modify the backend we recommend you use API Protection for further enhanced flexibility and security.
 
 This quickstart provides straightforward implementation if the secret is currently supplied in a request header to the API. The `ApproovURLSession` class used as a connection is able to automatically substitute in the secret for headers, but only if the app has passed the Approov attestation checks. If the app fails its checks then you can add a custom [rejection](#handling-rejections) handler.
 
 These additional steps require access to the [Approov CLI](https://approov.io/docs/latest/approov-cli-tool-reference/), please follow the [Installation](https://approov.io/docs/latest/approov-installation/) instructions.
 
 ## ENABLING MANAGED TRUST ROOTS
-Client secrets or API keys also need to be protected in transit. For 3rd party APIs you should not pin against their certificates since you are not in control of when they might changed. Instead the [Managed Trust Roots](https://approov.io/docs/latest/approov-usage-documentation/#managed-trust-roots) feature can be used to protect TLS.
+Client secrets or API keys also need to be protected in transit. For 3rd party APIs you should not pin against their certificates since you are not in control of when they might be changed. Instead the [Managed Trust Roots](https://approov.io/docs/latest/approov-usage-documentation/#managed-trust-roots) feature can be used to protect TLS.
 
 Ensure managed trust roots are enabled using:
 
@@ -22,7 +22,7 @@ This ensures connections may only use official certificates, and blocks the use 
 In order for secrets to be protected for particular API domains it is necessary to inform Approov about them. Execute the following command:
 
 ```
-approov api -add <your-domain> -noApproovToken
+approov api -add your.domain -noApproovToken
 ```
 
 This informs Approov that it should be active for the domain, but does not need to send Approov tokens for it. Adding the domain ensures that the channel will be protected against Man-in-the-Middle (MitM) attacks.
@@ -38,26 +38,28 @@ approov secstrings -setEnabled
 
 The quickstart integration works by allowing you to replace the secret in your app with a placeholder value instead, and then the placeholder value is mapped to the actual secret value automatically, if the app passes Approov attestation. The shipped app code will only contain the placeholder values.
 
-If your app currently uses `<secret-value>` then replace it in your app with the value `<secret-placeholder>`. Choose a suitable placeholder name to reflect the type of the secret. The placeholder value will be added to requests in the normal way, but you should be using the Approov enabled networking client to perfom the substituion.
+If your app currently uses `your-secret` then replace it in your app with the value `your-placeholder`. Choose a suitable placeholder name to reflect the type of the secret.
 
-You must inform Approov that it should substitute `<secret-placeholder>` for `<secret-value>` in requests as follows:
+You must inform Approov that it should substitute `your-placeholder` with `your-secret` in requests as follows:
 
 ```
-approov secstrings -addKey <secret-placeholder> -predefinedValue <secret-value>
+approov secstrings -addKey your-placeholder -predefinedValue your-secret
 ```
 > Note that this command also requires an [admin role](https://approov.io/docs/latest/approov-usage-documentation/#account-access-roles).
 
 You can add up to 16 different secret values to be substituted in this way.
 
-If the secret value is provided on the header `<secret-header>` then it is necessary to notify the `ApproovService` that the header is subject to substitution. You do this by making the call once, after initialization:
+If the secret value is provided on the header `your-header` then it is necessary to notify the `ApproovService` that the header is subject to substitution. You do this by making the call once, after initialization:
 
 ```ObjectiveC
-[ApproovService addSubstitutionHeader:@"<secret-header>" requiredPrefix:nil];
+[ApproovService addSubstitutionHeader:@"your-header" requiredPrefix:nil];
 ```
 
-With this in place, network calls using `ApproovURLSession` should replace the `<secret-placeholder>` with the `<secret-value>` as required when the app passes attestation.  Since the mapping lookup is performed on the placeholder value you have the flexibility of providing different secrets on different API calls, even if they passed with the same header name.
+With this in place, network calls using `ApproovURLSession` should replace the `your-placeholder` with `your-secret` as required when the app passes attestation.  Since the mapping lookup is performed on the placeholder value you have the flexibility of providing different secrets on different API calls, even if they are passed with the same header name.
 
-Since earlier released versions of the app may have already leaked the `<secret-value>`, you may wish to refresh the secret at some later point when any older version of the app is no longer in use. You can of course do this update over-the-air using Approov without any need to modify the app.
+You can see a [worked example](https://github.com/approov/quickstart-ios-objectivec-nsurlsession/blob/master/SHAPES-EXAMPLE.md#shapes-app-with-secrets-protection) for the Shapes app.
+
+Since earlier released versions of the app may have already leaked `your-secret`, you may wish to refresh the secret at some later point when any older version of the app is no longer in use. You can of course do this update over-the-air using Approov without any need to modify the app.
 
 ## REGISTERING APPS
 In order for Approov to recognize the app as being valid it needs to be registered with the service. Change the directory to the top level of your app project and then register the app with Approov:
@@ -66,13 +68,11 @@ In order for Approov to recognize the app as being valid it needs to be register
 approov registration -add YourApp.ipa
 ```
 
-Note, on Windows you need to substitute \ for / in the above command.
-
 > **IMPORTANT:** The registration takes up to 30 seconds to propagate across the Approov Cloud Infrastructure, therefore don't try to run the app again before this time has elapsed. During development of your app you can ensure it [always passes](https://approov.io/docs/latest/approov-usage-documentation/#adding-a-device-security-policy) on your device to not have to register the IPA each time you modify it.
 
 [Managing Registrations](https://approov.io/docs/latest/approov-usage-documentation/#managing-registrations) provides more details for app registrations, especially for releases to the Apple Store.
 
-[Bitcode](https://approov.io/docs/latest/approov-usage-documentation/#bitcode-mode-management) is supported by Approov but requires command line option to be specified when registering apps.
+Bitcode is supported by Approov (if you included the appropriate Approov SDK in your `Podfile`) but its use requires a command line option to be specified when registering apps:
 
 ```
 approov registration -add YourApp.ipa -bitcode
@@ -94,10 +94,7 @@ approov policy -setRejectionReasons on
 You will then be able to use the `rejectionReasons` key in the `NSError` returned from the network call to obtain a comma separated list of [device properties](https://approov.io/docs/latest/approov-usage-documentation/#device-properties) responsible for causing the rejection.
 
 ## FURTHER OPTIONS
-
-See [Getting Started With Approov](https://approov.io/docs/latest/approov-usage-documentation/#getting-started-with-approov) for information about additional Approov features you may wish to try.
-
-The quickstart also provides the following additional methods:
+See [Exploring Other Approov Features](https://approov.io/docs/latest/approov-usage-documentation/#exploring-other-approov-features) for information about additional Approov features you may wish to try.
 
 ### Header Prefixes
 In some cases the value to be substituted on a header may be prefixed by some fixed string. A common case is the presence of `Bearer` included in an authorization header to indicate the use of a bearer token. In this case you can specify a prefix as follows:
@@ -156,7 +153,7 @@ Note that this method may make networking calls so should never be called from t
 This method is also useful for providing runtime secrets protection when the values are not passed on headers.  
 
 ### Prefetching
-If you wish to reduce the latency associated with substituting the first secret, then make this call immediately after creating `ApproovService`:
+If you wish to reduce the latency associated with substituting the first secret, then make this call immediately after initializing `ApproovService`:
 
 ```ObjectiveC
 [ApproovService prefetch];
@@ -165,7 +162,7 @@ If you wish to reduce the latency associated with substituting the first secret,
 This initiates the process of fetching the required information as a background task, so that it is available immediately when subsequently needed. Note the information will automatically expire after approximately 5 minutes.
 
 ### Prechecking
-You may wish to do an early check in your to present a warning to the user if the app is not going to be able to access secrets because it fails the attestation process. Here is an example of calling the appropriate method in `ApproovService`:
+You may wish to do an early check in your app to present a warning to the user if it is not going to be able to access secrets because it fails the attestation process. Here is an example of calling the appropriate method in `ApproovService`:
 
 ```ObjectiveC
 NSError* error;
@@ -189,5 +186,4 @@ if (error != nil) {
 }
 ```
 
-
-> Note you should NEVER use this as the only form of protection in your app, this is simply to provide an early indication of failure to your users as a convenience. You must always also have secrets essential to the operation of your app, or access to backend API services, protected with Approov. This is because, although the test itself is heavily secured, it may be possible for an attacker to bypass its result or prevent it being called at all. When the app is dependent on the secrets protected, it is not possible for them to be obtained at all without passing the attestation.
+> Note you should NEVER use this as the only form of protection in your app, this is simply to provide an early indication of failure to your users as a convenience. You must always also have secrets essential to the operation of your app, or access to backend API services, protected with Approov. This is because, although the Approov attestation itself is heavily secured, it may be possible for an attacker to bypass its result or prevent it being called at all. When the app is dependent on the secrets protected, it is not possible for them to be obtained at all without passing the attestation.

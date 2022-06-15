@@ -152,7 +152,7 @@ If you still don't get a valid shape then there are some things you can try. Rem
 * You can use a debugger or simulator and get valid Approov tokens on a specific device by ensuring your device [always passes](https://approov.io/docs/latest/approov-usage-documentation/#adding-a-device-security-policy). As a shortcut, when you are first setting up, you can add a [device security policy](https://approov.io/docs/latest/approov-usage-documentation/#adding-a-device-security-policy) using the `latest` shortcut as discussed so that the `device ID` doesn't need to be extracted from the logs or an Approov token.
 * Check the `NSError` variable for detailed error message 
 
-## SHAPES APP WITH SECRET PROTECTION
+## SHAPES APP WITH SECRETS PROTECTION
 
 This section provides an illustration of an alternative option for Approov protection if you are not able to modify the backend to add an Approov Token check. We are still going to be using `https://shapes.approov.io/v1/shapes/` that simply checks for an API key, so please change line 85 so it points to `https://shapes.approov.io/v1/shapes/`. The `apiSecretKey` variable defined in line 28 should also be changed to `shapes_api_key_placeholder`, removing the actual API key out of the code:
 
@@ -177,7 +177,7 @@ approov secstrings -addKey shapes_api_key_placeholder -predefinedValue yXClypapW
 Next we need to inform Approov that it needs to substitute the placeholder value for the real API key on the `Api-Key` header. You need to add the call at `shapes-app/ApproovShapes/ViewController.m` and also keep the `ApproovURLSession` import at the start of the file.
 
 ```ObjectiveC
-// *** UNCOMMENT THE LINE BELOW FOR APPROOV USING SECRET PROTECTION ***
+// *** UNCOMMENT THE LINE BELOW FOR APPROOV USING SECRETS PROTECTION ***
 [[ApproovService shared] addSubstitutionHeader:@"Api-Key" requiredPrefix:nil];
 ```
 

@@ -31,10 +31,10 @@ NSString* helloEndpoint = @"https://shapes.approov.io/v1/hello";
 // Header name holding Api-Key value
 NSString* apiKeyHeader = @"Api-Key";
 // Shapes URL endpoint
-NSString* shapesEndpoint = @"https://shapes.approov.io/v2/shapes";
+NSString* shapesEndpoint = @"https://shapes.approov.io/v1/shapes";
 //*** UNCOMMENT THE LINE BELOW FOR APPROOV BACKEND THAT CHECKS TOKENS
 //NSString* shapesEndpoint = @"https://shapes.approov.io/v3/shapes";
-// *** CHANGE THE LINE BELOW FOR APPROOV USING SECRET PROTECTION TO `shapes_api_key_placeholder` ***
+// *** CHANGE THE LINE BELOW FOR APPROOV USING SECRETS PROTECTION TO `shapes_api_key_placeholder` ***
 NSString* apiSecretKey = @"yXClypapWNHIifHUWmBIyPFAm";
 // *** COMMENT THE LINE BELOW TO USE APPROOV yXClypapWNHIifHUWmBIyPFAm
 NSURLSession* defaultSession;
@@ -113,7 +113,7 @@ NSURLSession* defaultSession;
         self.statusTextView.text = @"Getting a shape...";
     });
     
-    // *** UNCOMMENT THE LINE BELOW FOR APPROOV USING SECRET PROTECTION ***
+    // *** UNCOMMENT THE LINE BELOW FOR APPROOV USING SECRETS PROTECTION ***
     //[ApproovService addSubstitutionHeader:@"Api-Key" requiredPrefix:@""];
 
     // We add the Api-Key to the request headers
