@@ -50,7 +50,7 @@ Sets an optional `prefix` String (such as "`Bearer `"). The `setApproovTokenPref
 + (void)setApproovTokenPrefix:(NSString*)newHeader;
 ```
 
-## bindHeader
+## setBindHeader
 Variable that holds the name of a binding header that may be present on requests being made. This is for the [token binding](https://approov.io/docs/latest/approov-usage-documentation/#token-binding) feature. A header should be chosen whose value is unchanging for most requests (such as an Authorization header). If the `setBindHeader` is present, then a hash of the header value is included in the issued Approov tokens to bind them to the value. This may then be verified by the backend API integration.
 
 ```ObjectiveC
@@ -69,6 +69,20 @@ Removes a `header` previously added using `addSubstitutionHeader`.
 
 ```ObjectiveC
 + (void)removeSubstitutionHeader:(NSString*)header;
+```
+
+## addSubstitutionQueryParam
+Adds a key name for a query parameter that should be subject to secure strings substitution. This means that if the query parameter is present in a URL then the value will be used as a key to look up a secure string value which will be substituted as the query parameter value instead. This allows easy migration to the use of secure strings.
+
+```ObjectiveC
++ (void)addSubstitutionQueryParam:(NSString*)key;
+```
+
+## removeSubstitutionQueryParam
+Removes a query parameter key name previously added using `addSubstitutionQueryParam`.
+
+```ObjectiveC
++ (void)removeSubstitutionQueryParam:(NSString*)key;
 ```
 
 ## prefetch
@@ -94,7 +108,7 @@ Gets the [device ID](https://approov.io/docs/latest/approov-usage-documentation/
 + (NSString*)getDeviceID;
 ```
 
-This returns nil if there is an error obtaining the device id.
+This returns `nil` if there is an error obtaining the device ID.
 
 ## setDataHashInToken
 Directly sets the [token binding](https://approov.io/docs/latest/approov-usage-documentation/#token-binding) hash to be included in subsequently fetched Approov tokens. If the hash is different from any previously set value then this will cause the next token fetch operation to fetch a new token with the correct payload data hash. The hash appears in the `pay` claim of the Approov token as a base64 encoded string of the SHA256 hash of the data. Note that the data is hashed locally and never sent to the Approov cloud service. This is an alternative to using `bindHeader` and you should not use both methods at the same time.

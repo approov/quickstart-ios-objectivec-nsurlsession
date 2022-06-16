@@ -52,7 +52,7 @@ Cloning spec repo `approov` from `https://github.com/approov/approov-service-nsu
 Cloning spec repo `approov-1` from `https://github.com/approov/approov-ios-sdk.git`
 Downloading dependencies
 Installing approov-ios-sdk (3.0.0)
-Installing approov-service-nsurlsession (3.0.0)
+Installing approov-service-nsurlsession (3.0.1)
 Generating Pods project
 Integrating client project
 
@@ -178,7 +178,7 @@ Next we need to inform Approov that it needs to substitute the placeholder value
 
 ```ObjectiveC
 // *** UNCOMMENT THE LINE BELOW FOR APPROOV USING SECRETS PROTECTION ***
-[[ApproovService shared] addSubstitutionHeader:@"Api-Key" requiredPrefix:nil];
+[ApproovService addSubstitutionHeader:@"Api-Key" requiredPrefix:nil];
 ```
 
 This processes the headers and replaces in the actual API key as required.
