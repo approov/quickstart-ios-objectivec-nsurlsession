@@ -62,12 +62,11 @@ NSString* apiSecretKey = @"yXClypapWNHIifHUWmBIyPFAm";
             self.statusImageView.image = [UIImage imageNamed:@"approov"];
             self.statusTextView.text = @"Error initializing ApproovService";
         });
-    }*/
+    }
+    defaultSession = [ApproovNSURLSession sessionWithConfiguration:NSURLSessionConfiguration.defaultSessionConfiguration];*/
     
     // *** UNCOMMENT THE LINE BELOW TO USE APPROOV SECRETS PROTECTION
     //[ApproovService addSubstitutionHeader:apiKeyHeader requiredPrefix:@""];
-    
-    defaultSession = [ApproovNSURLSession sessionWithConfiguration:NSURLSessionConfiguration.defaultSessionConfiguration];
 }
 
 // check unprotected hello endpoint
