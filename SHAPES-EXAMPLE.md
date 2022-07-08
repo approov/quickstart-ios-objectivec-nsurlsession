@@ -72,17 +72,19 @@ You should also comment out the `post_install` command that disables bitcode in 
 ## ENSURE THE SHAPES API IS ADDED
 
 In order for Approov tokens to be generated for `https://shapes.approov.io/v2/shapes` it is necessary to inform Approov about it:
+
 ```
 $ approov api -add shapes.approov.io
 ```
-Tokens for this domain will be automatically signed with the specific secret for this domain, rather than the normal one for your account.
+
+Approov tokens for this domain will be automatically signed with the specific secret for this domain, rather than the normal one for your account.
 
 ## MODIFY THE APP TO USE APPROOV
 
 The approov-service-nsurlsession includes the definition and implementation of the `ApproovNSURLSession` class. Import the `ApproovNSURLSession.h` header so we can use its definitions in the `ApproovShapes` project. Uncomment the import statement to `ViewController.m`:
 
 ```ObjectiveC
-// *** UNCOMMENT THE LINE BELOW TO USE APPROOV ***
+// *** UNCOMMENT THE LINE BELOW TO USE APPROOV
 #import "ApproovNSURLSession.h"
 ```
 
@@ -91,16 +93,17 @@ Now you need to replace `NSURLSession` with `ApproovNSURLSession` and initialize
 ```ObjectiveC
 // *** UNCOMMENT THE LINES BELOW TO USE APPROOV
 NSError* error;
-[ApproovService initialize:@"<enter-you-config-string-here>" errorMessage:&error];
+[ApproovService initialize:@"<enter-you-config-string-here>" error:&error];
 if (error != nil) {
     // bail out due to error
 }
 defaultSession = [ApproovNSURLSession sessionWithConfiguration:NSURLSessionConfiguration.defaultSessionConfiguration];
 ```
 
-Lastly, make sure we are using the Approov protected endpoint for the shapes server. Find the `checkShape` function and uncomment the line bellow the comment:
+Lastly, make sure we are using the Approov protected endpoint for the shapes server. Uncomment the line below the comment (commenting the previous definition):
+
 ```ObjectiveC
-//*** UNCOMMENT THE LINE BELOW FOR APPROOV BACKEND THAT CHECKS TOKENS
+// *** UNCOMMENT THE LINE BELOW FOR APPROOV API PROTECTION
 NSString* shapesEndpoint = @"https://shapes.approov.io/v3/shapes";
 ```
 
@@ -175,7 +178,7 @@ approov secstrings -addKey shapes_api_key_placeholder -predefinedValue yXClypapW
 Next we need to inform Approov that it needs to substitute the placeholder value for the real API key on the `Api-Key` header. You need to add the call at `shapes-app/ApproovShapes/ViewController.m`:
 
 ```ObjectiveC
-// *** UNCOMMENT THE LINE BELOW FOR APPROOV USING SECRETS PROTECTION ***
+// *** UNCOMMENT THE LINE BELOW FOR APPROOV USING SECRETS PROTECTION
 [ApproovService addSubstitutionHeader:apiKeyHeader requiredPrefix:nil];
 ```
 

@@ -17,7 +17,7 @@
 
 #import "ViewController.h"
 
-// *** UNCOMMENT THE LINE BELOW TO USE APPROOV ***
+// *** UNCOMMENT THE LINE BELOW TO USE APPROOV
 //#import "ApproovNSURLSession.h"
 
 @interface ViewController ()
