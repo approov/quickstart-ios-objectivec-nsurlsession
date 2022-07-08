@@ -61,17 +61,10 @@ Pod installation complete! There are 2 dependencies from the Podfile and 2 total
 ```
 
 The Approov SDK is now included as a dependency in your project. Please observe `pod install` command output notice regarding the `ApproovShapes.xcworkspace` as it is the correct way to modify the project from this point on.
-Note that if you wish, you could use bitcode by modifying the `Podfile` to point to the `approov-sdk-ios-bitcode` binary sdk repository like so:
-
-```
-pod 'approov-ios-sdk-bitcode', '3.0.0', :source => "https://github.com/approov/approov-ios-sdk-bitcode.git"
-```
-
-You should also comment out the `post_install` command that disables bitcode in the Xcode project.
 
 ## ENSURE THE SHAPES API IS ADDED
 
-In order for Approov tokens to be generated for `https://shapes.approov.io/v2/shapes` it is necessary to inform Approov about it:
+In order for Approov tokens to be generated for `https://shapes.approov.io/v3/shapes` it is necessary to inform Approov about it:
 
 ```
 $ approov api -add shapes.approov.io
