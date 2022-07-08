@@ -2,28 +2,21 @@
 This provides a reference for all of the static methods defined on `ApproovService`. These are available if you import as follows:
 
 ```ObjectiveC
-#import "ApproovURLSession.h"
+#import "ApproovNSURLSession.h"
 ```
 
-Various methods accept as out parameter an `NSError` and fill the object reference if there is a problem. The `NSError` generated contains a dictionary with the following defined keys:
+Various methods accept as out parameter an `NSError` and fill the object reference if there is a problem. The `NSError` generated contains a dictionary with the following defined keys in the `userInfo` map of the `NSError`:
 
-```ObjectiveC
-/* NSError dictionary keys to hold Approov SDK Errors and additional status messages */
-static NSString* ApproovSDKErrorKey = @"ApproovServiceError";
-static NSString* ApproovSDKRejectionReasonsKey = @"RejectionReasons";
-static NSString* ApproovSDKARCKey = @"ARC";
-static NSString* RetryLastOperationKey = @"RetryLastOperation";
-```
-
- Most error cases represent unrecoverable failures, but if a method returns an `NSError` with the key `RetryLastOperation` set to `YES`, then this indicates the problem was caused by a networking issue, and a user initiated retry should be allowed.
-
-If a method returns a value in the `ApproovSDKErrorKey` key, then this indicates the problem was that the app failed attestation. An additional associated value `ARC` provides the [Attestation Response Code](https://approov.io/docs/latest/approov-usage-documentation/#attestation-response-code), which could be provided to the user for communication with your app support to determine the reason for failure, without this being revealed to the end user. The associated value `RejectionReasons` provides the [Rejection Reasons](https://approov.io/docs/latest/approov-usage-documentation/#rejection-reasons) if the feature is enabled, providing a comma separated list of reasons why the app attestation was rejected.
+* `message`: A descriptive error message.
+* `type`: Type of the error which may be `general`, `network` or `rejection`. If the type is `network` then this indicates that the error was caused by a temporary networking issue, so an option should be provided to the user to retry.
+* `rejectionARC`: Only provided for a `rejection` error type. Provides the [Attestation Response Code](https://approov.io/docs/latest/approov-usage-documentation/#attestation-response-code), which could be provided to the user for communication with your app support to determine the reason for failure, without this being revealed to the end user.
+* `rejectionReasons`: Only provided for a `rejection` error type. If the [Rejection Reasons](https://approov.io/docs/latest/approov-usage-documentation/#rejection-reasons) feature is enabled, this provides a comma separated list of reasons why the app attestation was rejected.
 
 ## Initialize
 Initializes the Approov SDK and thus enables the Approov features. The `config` will have been provided in the initial onboarding or email or can be [obtained using the Approov CLI](https://approov.io/docs/latest/approov-usage-documentation/#getting-the-initial-sdk-configuration). This will generate an error if a second attempt is made at initialization with a different `config`.
 
 ```ObjectiveC
-+ (void)initialize:(NSString*)configString errorMessage:(NSError**)error;
++ (void)initialize:(NSString *)configString error:(NSError **)error;
 ```
 
 It is possible to pass an empty `config` string to indicate that no initialization is required. Only do this if you are also using a different Approov quickstart in your app (which will use the same underlying Approov SDK) and this will have been initialized first.
@@ -41,48 +34,49 @@ Note that this should be used with *CAUTION* because it may allow a connection t
 Allows to set the name of the header (`approovTokenHeader`) that the Approov token is added on. By default the token is provided on `Approov-Token` with no prefix.
 
 ```ObjectiveC
-public static func setApproovHeader(header: String, prefix: String)
++ (void)setApproovTokenHeader:(NSString *)header;
 ```
+
 ## setApproovTokenPrefix
-Sets an optional `prefix` String (such as "`Bearer `"). The `setApproovTokenPrefix` is not required usually so the default value is an empty string.
+Sets an optional `prefix` String (such as "`Bearer `") placed before the Approov token iself. The `setApproovTokenPrefix` is not usually required so the default value is an empty string.
 
 ```ObjectiveC
-+ (void)setApproovTokenPrefix:(NSString*)newHeader;
++ (void)setApproovTokenPrefix:(NSString *)prefix;
 ```
 
-## setBindHeader
+## setBindingHeader
 Variable that holds the name of a binding header that may be present on requests being made. This is for the [token binding](https://approov.io/docs/latest/approov-usage-documentation/#token-binding) feature. A header should be chosen whose value is unchanging for most requests (such as an Authorization header). If the `setBindHeader` is present, then a hash of the header value is included in the issued Approov tokens to bind them to the value. This may then be verified by the backend API integration.
 
 ```ObjectiveC
-+ (void)setBindHeader:(NSString*)newHeader;
++ (void)setBindingHeader:(NSString *)header;
 ```
 
 ## addSubstitutionHeader
 Adds the name of a header which should be subject to [secure strings](https://approov.io/docs/latest/approov-usage-documentation/#secure-strings) substitution. This means that if the `header` is present then the value will be used as a key to look up a secure string value which will be substituted into the header value instead. This allows easy migration to the use of secure strings. A `prefix` may be specified to deal with cases such as the use of "`Bearer `" prefixed before values in an authorization header. Set `prefix` to `nil` if it is not required.
 
 ```ObjectiveC
-+ (void)addSubstitutionHeader:(NSString*)header requiredPrefix:(NSString*)prefix;
++ (void)addSubstitutionHeader:(NSString *)header requiredPrefix:(NSString *)prefix;
 ```
 
 ## removeSubstitutionHeader
 Removes a `header` previously added using `addSubstitutionHeader`.
 
 ```ObjectiveC
-+ (void)removeSubstitutionHeader:(NSString*)header;
++ (void)removeSubstitutionHeader:(NSString *)header;
 ```
 
 ## addSubstitutionQueryParam
 Adds a key name for a query parameter that should be subject to secure strings substitution. This means that if the query parameter is present in a URL then the value will be used as a key to look up a secure string value which will be substituted as the query parameter value instead. This allows easy migration to the use of secure strings.
 
 ```ObjectiveC
-+ (void)addSubstitutionQueryParam:(NSString*)key;
++ (void)addSubstitutionQueryParam:(NSString *)key;
 ```
 
 ## removeSubstitutionQueryParam
 Removes a query parameter key name previously added using `addSubstitutionQueryParam`.
 
 ```ObjectiveC
-+ (void)removeSubstitutionQueryParam:(NSString*)key;
++ (void)removeSubstitutionQueryParam:(NSString *)key;
 ```
 
 ## prefetch
@@ -96,7 +90,7 @@ Performs a fetch to lower the effective latency of a subsequent token fetch or s
 Performs a precheck to determine if the app will pass attestation. This requires [secure strings](https://approov.io/docs/latest/approov-usage-documentation/#secure-strings) to be enabled for the account, although no strings need to be set up. 
 
 ```ObjectiveC
-+ (void)precheck:(NSError**)error;
++ (void)precheck:(NSError **)error;
 ```
 
 This populates the `NSError` parameter if the precheck failed. This will likely require network access so may take some time to complete, and should not be called from the UI thread.
@@ -105,7 +99,7 @@ This populates the `NSError` parameter if the precheck failed. This will likely 
 Gets the [device ID](https://approov.io/docs/latest/approov-usage-documentation/#extracting-the-device-id) used by Approov to identify the particular device that the SDK is running on. Note that different Approov apps on the same device will return a different ID. Moreover, the ID may be changed by an uninstall and reinstall of the app.
 
 ```ObjectiveC
-+ (NSString*)getDeviceID;
++ (NSString *)getDeviceID;
 ```
 
 This returns `nil` if there is an error obtaining the device ID.
@@ -114,14 +108,14 @@ This returns `nil` if there is an error obtaining the device ID.
 Directly sets the [token binding](https://approov.io/docs/latest/approov-usage-documentation/#token-binding) hash to be included in subsequently fetched Approov tokens. If the hash is different from any previously set value then this will cause the next token fetch operation to fetch a new token with the correct payload data hash. The hash appears in the `pay` claim of the Approov token as a base64 encoded string of the SHA256 hash of the data. Note that the data is hashed locally and never sent to the Approov cloud service. This is an alternative to using `bindHeader` and you should not use both methods at the same time.
 
 ```ObjectiveC
-+ (void)setDataHashInToken:(NSString*)data;
++ (void)setDataHashInToken:(NSString *)data;
 ```
 
 ## fetchToken
 Performs an Approov token fetch for the given `url`. This should be used in situations where it is not possible to use the `updateRequestHeaders` method to add the token. Note that the returned token should NEVER be cached by your app, you should call this function when it is needed.
 
 ```ObjectiveC
-+ (NSString*)fetchToken:(NSString*)url error:(NSError**)error;
++ (NSString *)fetchToken:(NSString *)url error:(NSError **)error;
 ```
 
 This populates the `NSError` parameter if there was a problem obtaining an Approov token. This may require network access so may take some time to complete, and should not be called from the UI thread.
@@ -130,7 +124,7 @@ This populates the `NSError` parameter if there was a problem obtaining an Appro
 Gets the [message signature](https://approov.io/docs/latest/approov-usage-documentation/#message-signing) for the given `message`. This is returned as a base64 encoded signature. This feature uses an account specific message signing key that is transmitted to the SDK after a successful fetch if the facility is enabled for the account. Note that if the attestation failed then the signing key provided is actually random so that the signature will be incorrect. An Approov token should always be included in the message being signed and sent alongside this signature to prevent replay attacks.
 
 ```ObjectiveC
-+ (NSString*)getMessageSignature:(NSString*)message;
++ (NSString *)getMessageSignature:(NSString *)message;
 ```
 
 This return `nil` if there was an error obtaining the signature.
@@ -139,7 +133,7 @@ This return `nil` if there was an error obtaining the signature.
 Fetches a [secure string](https://approov.io/docs/latest/approov-usage-documentation/#secure-strings) with the given `key` if `newDef` is `nil`. Returns `nil` if the `key` secure string is not defined. If `newDef` is not `nil` then a secure string for the particular app instance may be defined. In this case the new value is returned as the secure string. Use of an empty string for `newDef` removes the string entry. Note that the returned string should NEVER be cached by your app, you should call this function when it is needed.
 
 ```ObjectiveC
-+ (NSString*)fetchSecureString:(NSString*)key newDefinition:(NSString*)newDef error:(NSError**)error;
++ (NSString *)fetchSecureString:(NSString *)key newDef:(NSString *)newDef error:(NSError **)error;
 ```
 
 This populates the `NSError` parameter if there was a problem obtaining the secure string. This may require network access so may take some time to complete, and should not be called from the UI thread.
@@ -148,7 +142,7 @@ This populates the `NSError` parameter if there was a problem obtaining the secu
 Fetches a [custom JWT](https://approov.io/docs/latest/approov-usage-documentation/#custom-jwts) with the given marshaled JSON `payload`.
 
 ```ObjectiveC
-+ (NSString*)fetchCustomJWT:(NSString*)payload error:(NSError**)error;
++ (NSString *)fetchCustomJWT:(NSString *)payload error:(NSError **)error;
 ```
 
 This populates the `NSError` parameter if there was a problem obtaining the custom JWT. This may require network access so may take some time to complete, and should not be called from the UI thread.

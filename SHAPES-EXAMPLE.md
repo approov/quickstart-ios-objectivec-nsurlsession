@@ -52,7 +52,7 @@ Cloning spec repo `approov` from `https://github.com/approov/approov-service-nsu
 Cloning spec repo `approov-1` from `https://github.com/approov/approov-ios-sdk.git`
 Downloading dependencies
 Installing approov-ios-sdk (3.0.0)
-Installing approov-service-nsurlsession (3.0.1)
+Installing approov-service-nsurlsession (3.0.2)
 Generating Pods project
 Integrating client project
 
@@ -79,28 +79,23 @@ Tokens for this domain will be automatically signed with the specific secret for
 
 ## MODIFY THE APP TO USE APPROOV
 
-The approov-service-nsurlsession includes the definition and implementation of the `ApproovURLSession` class. Import the `ApproovURLSession.h` header so we can use its definitions in the `ApproovShapes` project. Uncomment the import statement to `ViewController.m`:
+The approov-service-nsurlsession includes the definition and implementation of the `ApproovNSURLSession` class. Import the `ApproovNSURLSession.h` header so we can use its definitions in the `ApproovShapes` project. Uncomment the import statement to `ViewController.m`:
 
 ```ObjectiveC
-#import "ViewController.h"
 // *** UNCOMMENT THE LINE BELOW TO USE APPROOV ***
-#import "ApproovURLSession.h"
+#import "ApproovNSURLSession.h"
 ```
 
-Find the following lines in `ViewController.m` source file and uncomment them:
-```ObjectiveC
-// *** UNCOMMENT THE LINES BELOW TO USE APPROOV
-ApproovURLSession* defaultSession;
-```
-Now you need to replace `NSURLSession` with `ApproovURLSession` and initialize the ApproovService using the apropriate configuration string. The Approov SDK needs a configuration string to identify the account associated with the app. You will have received this in your Approov onboarding email (it will be something like `#123456#K/XPlLtfcwnWkzv99Wj5VmAxo4CrU267J1KlQyoz8Qo=`). Find the `viewDidLoad` function and uncomment the lines indicated:
+Now you need to replace `NSURLSession` with `ApproovNSURLSession` and initialize the ApproovService using the apropriate configuration string. The Approov SDK needs a configuration string to identify the account associated with the app. You will have received this in your Approov onboarding email (it will be something like `#123456#K/XPlLtfcwnWkzv99Wj5VmAxo4CrU267J1KlQyoz8Qo=`). Find the `viewDidLoad` function and uncomment the lines indicated:
+
 ```ObjectiveC
 // *** UNCOMMENT THE LINES BELOW TO USE APPROOV
 NSError* error;
 [ApproovService initialize:@"<enter-you-config-string-here>" errorMessage:&error];
 if (error != nil) {
-    // Bail out due to error
+    // bail out due to error
 }
-defaultSession = [ApproovURLSession sessionWithConfiguration:NSURLSessionConfiguration.defaultSessionConfiguration];
+defaultSession = [ApproovNSURLSession sessionWithConfiguration:NSURLSessionConfiguration.defaultSessionConfiguration];
 ```
 
 Lastly, make sure we are using the Approov protected endpoint for the shapes server. Find the `checkShape` function and uncomment the line bellow the comment:
@@ -109,17 +104,20 @@ Lastly, make sure we are using the Approov protected endpoint for the shapes ser
 NSString* shapesEndpoint = @"https://shapes.approov.io/v3/shapes";
 ```
 
-The `ApproovURLSession` class adds the `Approov-Token` header and also applies pinning for the connections to ensure that no Man-in-the-Middle can eavesdrop on any communication being made. The `Approov-Token` header is checked by the server at `https://shapes.approov.io/v3/shapes` (along with the API key) and if the validity of the token is verified, a shape should be displayed.
+The `ApproovNSURLSession` class adds the `Approov-Token` header and also applies pinning for the connections to ensure that no Man-in-the-Middle can eavesdrop on any communication being made. The `Approov-Token` header is checked by the server at `https://shapes.approov.io/v3/shapes` (along with the API key) and if the validity of the token is verified, a shape should be displayed.
 
 ## REGISTER YOUR APP WITH APPROOV
 
-In order for Approov to recognize the app as being valid it needs to be registered with the service. This requires building an `.ipa` file using the `Archive` option of Xcode (this option will not be avaialable if using the simulator). Make sure `Any iOS Device` is selected as build destination. This ensures an `embedded.mobileprovision` is included in the application package which is a requirement for the `approov` command line tool. 
+In order for Approov to recognize the app as being valid it needs to be registered with the service. This requires building an `.ipa` file using the `Archive` option of Xcode (this option will not be avaialable if using the simulator).
+
+Make sure `Any iOS Device` is selected as the build destination. This ensures an `embedded.mobileprovision` is included in the application package which is a requirement for the `approov` command line tool. 
 
 ![Target Device](readme-images/target-device.png)
 
 We can now build the application by selecting `Product` and then `Archive`. Select the apropriate code signing options and eventually a destination to save the `.ipa` file.
 
 Copy the `ApproovShapes.ipa` file to a convenient working directory. Register the app with Approov:
+
 ```
 $ approov registration -add ApproovShapes.ipa
 ```
@@ -154,9 +152,9 @@ If you still don't get a valid shape then there are some things you can try. Rem
 
 ## SHAPES APP WITH SECRETS PROTECTION
 
-This section provides an illustration of an alternative option for Approov protection if you are not able to modify the backend to add an Approov Token check. We are still going to be using `https://shapes.approov.io/v1/shapes/` that simply checks for an API key, so please change line 85 so it points to `https://shapes.approov.io/v1/shapes/`. The `apiSecretKey` variable defined in line 28 should also be changed to `shapes_api_key_placeholder`, removing the actual API key out of the code:
+This section provides an illustration of an alternative option for Approov protection if you are not able to modify the backend to add an Approov Token check. We are still going to be using `https://shapes.approov.io/v1/shapes/` that simply checks for an API key, so please change the code so it points to `https://shapes.approov.io/v1/shapes/`.
 
-![Shapes V1 Endpoint](readme-images/shapes-v1-endpoint.png)
+The `apiSecretKey` variable should also be changed to `shapes_api_key_placeholder`, removing the actual API key out of the code:
 
 Next we enable the [Secure Strings](https://approov.io/docs/latest/approov-usage-documentation/#secure-strings) feature:
 
@@ -174,11 +172,11 @@ approov secstrings -addKey shapes_api_key_placeholder -predefinedValue yXClypapW
 
 > Note that this command also requires an [admin role](https://approov.io/docs/latest/approov-usage-documentation/#account-access-roles).
 
-Next we need to inform Approov that it needs to substitute the placeholder value for the real API key on the `Api-Key` header. You need to add the call at `shapes-app/ApproovShapes/ViewController.m` and also keep the `ApproovURLSession` import at the start of the file.
+Next we need to inform Approov that it needs to substitute the placeholder value for the real API key on the `Api-Key` header. You need to add the call at `shapes-app/ApproovShapes/ViewController.m`:
 
 ```ObjectiveC
 // *** UNCOMMENT THE LINE BELOW FOR APPROOV USING SECRETS PROTECTION ***
-[ApproovService addSubstitutionHeader:@"Api-Key" requiredPrefix:nil];
+[ApproovService addSubstitutionHeader:apiKeyHeader requiredPrefix:nil];
 ```
 
 This processes the headers and replaces in the actual API key as required.
@@ -188,6 +186,7 @@ Build and run the app again to ensure that the `ApproovShapes.ipa` in the genera
 ```
 approov registration -add ApproovShapes.ipa
 ```
+
 Run the app again without making any changes to the app and press the `Get Shape` button. You should now see this (or another shape):
 
 <p>
