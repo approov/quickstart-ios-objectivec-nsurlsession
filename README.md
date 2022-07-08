@@ -26,6 +26,8 @@ The `ApproovNSURLSession` class mimics the interface of the `NSURLSession` class
 Additionally, the `ApproovService` needs to be initialized before any network request is made using `ApproovNSURLSession`. The `ApproovService` initialization requires a configuration string parameter replacing `<enter-your-config-string-here>`, which is a custom string that configures your Approov account access. This will have been provided in your Approov onboarding email (it will be something like `#123456#K/XPlLtfcwnWkzv99Wj5VmAxo4CrU267J1KlQyoz8Qo=`). An additional parameter is an `NSError *` reference which would provide any error messages if a failure occurs.
 
 ```ObjectiveC
+#import "ApproovNSURLSession.h"
+
 [ApproovService initialize:@"<enter-your-config-string-here>" error:&error];
 NSURLSession *defaultSession = [ApproovNSURLSession sessionWithConfiguration:NSURLSessionConfiguration.defaultSessionConfiguration];
 ```
@@ -45,6 +47,7 @@ To actually protect your APIs there are some further steps. Approov provides two
 * [SECRETS PROTECTION](https://github.com/approov/quickstart-ios-objectivec-nsurlsession/blob/master/SECRETS-PROTECTION.md): If you do not control the backend API(s) being protected, and are therefore unable to modify it to check Approov tokens, you can use this approach instead. It allows app secrets, and API keys, to be protected so that they no longer need to be included in the built code and are only made available to passing apps at runtime.
 
 Note that it is possible to use both approaches side-by-side in the same app, in case your app uses a mixture of 1st and 3rd party APIs.
+
 See [REFERENCE](https://github.com/approov/quickstart-ios-objectivec-nsurlsession/blob/master/REFERENCE.md) for a complete list of all of the `ApproovService` methods.
 
 ## DELEGATES
@@ -54,7 +57,8 @@ Please note, that the `ApproovNSURLSession` implementation supports network dele
 - (void)URLSession:(NSURLSession *)session
               task:(NSURLSessionTask *)task
 didReceiveChallenge:(NSURLAuthenticationChallenge *)challenge
- completionHandler:(void (^)(NSURLSessionAuthChallengeDisposition disposition, NSURLCredential *credential))completionHandler;
+ completionHandler:(void (^)(NSURLSessionAuthChallengeDisposition disposition,
+    NSURLCredential *credential))completionHandler;
 ```
 
 it will not be called. Instead, you can use the session level delegate:
@@ -62,7 +66,8 @@ it will not be called. Instead, you can use the session level delegate:
 ```ObjectiveC
 - (void)URLSession:(NSURLSession *)session
 didReceiveChallenge:(NSURLAuthenticationChallenge *)challenge
- completionHandler:(void (^)(NSURLSessionAuthChallengeDisposition disposition, NSURLCredential *credential))completionHandler
+ completionHandler:(void (^)(NSURLSessionAuthChallengeDisposition disposition,
+    NSURLCredential *credential))completionHandler
 ```
 
 ## BITCODE SUPPORT
