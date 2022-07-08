@@ -52,7 +52,7 @@ NSString* apiSecretKey = @"yXClypapWNHIifHUWmBIyPFAm";
 - (void)viewDidLoad {
     [super viewDidLoad];
     // *** COMMENT THE LINE BELOW TO USE APPROOV
-    //defaultSession = [NSURLSession sessionWithConfiguration:NSURLSessionConfiguration.defaultSessionConfiguration];
+    defaultSession = [NSURLSession sessionWithConfiguration:NSURLSessionConfiguration.defaultSessionConfiguration];
     
     // *** UNCOMMENT THE LINES BELOW TO USE APPROOV
     /*NSError* error;
