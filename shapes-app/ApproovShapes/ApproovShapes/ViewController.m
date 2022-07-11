@@ -130,7 +130,7 @@ NSString* apiSecretKey = @"yXClypapWNHIifHUWmBIyPFAm";
             long code = httpResponse.statusCode;
             if (code == 200) {
                 // successful http response
-                message = @"200: Approoved!";
+                message = @"200";
                 NSLog(@"Data: %@", [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
                 // unmarshal the JSON response
                 NSError* error;
@@ -140,6 +140,8 @@ NSString* apiSecretKey = @"yXClypapWNHIifHUWmBIyPFAm";
                     message = @"Error unmarshaling JSON from response";
                     image = [UIImage imageNamed: @"confused"];
                 } else {
+                    if ([jsonDict objectForKey:@"status"] != nil)
+                        message = [jsonDict objectForKey:@"status"];
                     if ([jsonDict objectForKey:@"shape"] != nil) {
                         NSString* shape = [jsonDict objectForKey:@"shape"];
                         if([shape.lowercaseString isEqualToString:@"circle"]){
