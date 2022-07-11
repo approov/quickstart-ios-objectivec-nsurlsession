@@ -43,7 +43,9 @@ The subsequent steps of this guide show you how to provide better protection, ei
 
 ## ADD THE APPROOV SDK AND THE APPROOV SERVICE NSURLSESSION
 
-Get the latest Approov SDK by using `CocoaPods`. The `Podfile` configuration file is located in the `shapes-app/ApproovShapes` directory and should contain a reference to the latest version of the Approov SDK available for iOS and the approov service that enables the ApproovSDK use. The `approov-service-nsurlsession` is actually an open source wrapper layer that allows you to easily use Approov with `NSURLSession`. This has a further dependency to the closed source Approov SDK itself. Install the dependency by executing:
+Get the latest Approov SDK by using `CocoaPods`. The `Podfile` configuration file is located in the `shapes-app/ApproovShapes` directory and should contain a reference to the latest version of the Approov SDK available for iOS and the `approov-service-nsurlsession` that simplifies the Approov SDK use. The `approov-service-nsurlsession` is actually an open source wrapper layer that allows you to easily use Approov with `NSURLSession`.
+
+Install the dependency by executing:
 
 ```
 $ pod install
@@ -60,7 +62,9 @@ Integrating client project
 Pod installation complete! There are 2 dependencies from the Podfile and 2 total pods installed.
 ```
 
-The Approov SDK is now included as a dependency in your project. Please observe `pod install` command output notice regarding the `ApproovShapes.xcworkspace` as it is the correct way to modify the project from this point on.
+The Approov SDK and `approov-service-nsurlsession` are now included as dependencies in your project.
+
+> **IMPORTANT:**: Please observe `pod install` command output notice regarding the `ApproovShapes.xcworkspace` as it is the correct way to modify the project from this point on.
 
 ## ENSURE THE SHAPES API IS ADDED
 
@@ -74,7 +78,7 @@ Approov tokens for this domain will be automatically signed with the specific se
 
 ## MODIFY THE APP TO USE APPROOV
 
-The approov-service-nsurlsession includes the definition and implementation of the `ApproovNSURLSession` class. Import the `ApproovNSURLSession.h` header so we can use its definitions in the `ApproovShapes` project. Uncomment the import statement to `ViewController.m`:
+The `approov-service-nsurlsession` includes the definition and implementation of the `ApproovNSURLSession` class. Import the `ApproovNSURLSession.h` header so we can use its definitions in the `ApproovShapes` project. Uncomment the import statement to `ViewController.m`:
 
 ```ObjectiveC
 // *** UNCOMMENT THE LINE BELOW TO USE APPROOV
