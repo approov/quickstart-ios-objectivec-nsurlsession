@@ -34,7 +34,7 @@ Click on the `Hello` button and you should see this:
 This checks the connectivity by connecting to the endpoint `https://shapes.approov.io/v1/hello`. Now press the `Shape` button and you will see this (or a different shape):
 
 <p>
-    <img src="readme-images/shapes-good.png" width="256" title="Shapes Good">
+    <img src="readme-images/shape.png" width="256" title="Shape">
 </p>
 
 This contacts `https://shapes.approov.io/v1/shapes` to get the name of a random shape. This endpoint is protected with an API key that is built into the code, and therefore can be easily extracted from the app.
@@ -133,7 +133,7 @@ If using Mac OS Catalina, simply drag the `ipa` file to the device. Alternativel
 Launch the app and press the `Shape` button. You should now see this (or another shape):
 
 <p>
-    <img src="readme-images/shapes-good.png" width="256" title="Shapes Good">
+    <img src="readme-images/shape-approoved.png" width="256" title="Shape Approoved">
 </p>
 
 This means that the app is getting a validly signed Approov token to present to the shapes endpoint.
@@ -190,7 +190,7 @@ approov registration -add ApproovShapes.ipa
 Run the app again without making any changes to the app and press the `Get Shape` button. You should now see this (or another shape):
 
 <p>
-    <img src="readme-images/shapes-good.png" width="256" title="Shapes Good">
+    <img src="readme-images/shape.png" width="256" title="Shape">
 </p>
 
 This means that the registered app is able to access the API key, even though it is no longer embedded in the app code, and provide it to the shapes request.
