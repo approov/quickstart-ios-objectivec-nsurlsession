@@ -6,6 +6,8 @@ This quickstart provides the basic steps for integrating Approov into your app. 
 
 To follow this guide you should have received an onboarding email for a trial or paid Approov account.
 
+Note that the minimum requirement is iOS 10. You cannot use Approov in apps that support iOS versions older than this.
+
 ## ADDING APPROOV SERVICE DEPENDENCY
 The Approov integration is available via [`CocoaPods`](https://cocoapods.org/). This allows inclusion into the project by simply specifying a dependency in the `Podfile` for the app:
 

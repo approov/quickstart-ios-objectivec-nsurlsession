@@ -124,7 +124,9 @@ $ approov registration -add ApproovShapes.ipa
 
 ## RUNNING THE SHAPES APP WITH APPROOV
 
-Install the `ApproovShapes.ipa` that you just registered on the device. You will need to remove the old app from the device first. Please note that you need to run the applicaiton with Approov SDK on a real device and not a simulator. If you are using an emulator, you will need to learn how ensure your device [always passes](https://approov.io/docs/latest/approov-usage-documentation/#adding-a-device-security-policy) since the simulators are not real devices and you will not be able to succesfully authenticate the app.
+Install the `ApproovShapes.ipa` that you just registered on the device. You will need to remove the old app from the device first.
+
+Please note that if you are using a simulator, you will need to ensure it [always passes](https://approov.io/docs/latest/approov-usage-documentation/#adding-a-device-security-policy) since the simulators are not real devices and you will normally be rejected by Approov.
 
 If using Mac OS Catalina, simply drag the `ipa` file to the device. Alternatively you can select `Window`, then `Devices and Simulators` and after selecting your device click on the small `+` sign to locate the `ipa` archive you would like to install.
 
