@@ -71,7 +71,7 @@ The Approov SDK and `approov-service-nsurlsession` are now included as dependenc
 In order for Approov tokens to be generated for `https://shapes.approov.io/v3/shapes` it is necessary to inform Approov about it:
 
 ```
-$ approov api -add shapes.approov.io
+approov api -add shapes.approov.io
 ```
 
 Approov tokens for this domain will be automatically signed with the specific secret for this domain, rather than the normal one for your account.
@@ -119,7 +119,7 @@ We can now build the application by selecting `Product` and then `Archive`. Sele
 Copy the `ApproovShapes.ipa` file to a convenient working directory. Register the app with Approov:
 
 ```
-$ approov registration -add ApproovShapes.ipa
+approov registration -add ApproovShapes.ipa
 ```
 
 ## RUNNING THE SHAPES APP WITH APPROOV
