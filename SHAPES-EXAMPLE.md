@@ -90,7 +90,7 @@ Now you need to replace `NSURLSession` with `ApproovNSURLSession` and initialize
 ```ObjectiveC
 // *** UNCOMMENT THE LINES BELOW TO USE APPROOV
 NSError* error;
-[ApproovService initialize:@"<enter-you-config-string-here>" error:&error];
+[ApproovService initialize:@"<enter-your-config-string-here>" error:&error];
 if (error != nil) {
     // bail out due to error
 }
