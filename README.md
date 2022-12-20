@@ -15,8 +15,8 @@ The Approov integration is available via [`CocoaPods`](https://cocoapods.org/). 
 target 'YourApplication' do
     use_frameworks!
     platform :ios, '10.0'
-    pod 'approov-service-nsurlsession', '3.0.2', :source => "https://github.com/approov/approov-service-nsurlsession.git"
-    pod 'approov-ios-sdk', '3.0.0', :source => "https://github.com/approov/approov-ios-sdk.git"
+    pod 'approov-service-nsurlsession', '3.1.0', :source => "https://github.com/approov/approov-service-nsurlsession.git"
+    pod 'approov-ios-sdk', '3.1.0', :source => "https://github.com/approov/approov-ios-sdk.git"
 end
 ```
 
