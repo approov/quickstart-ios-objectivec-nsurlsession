@@ -15,7 +15,7 @@ The Approov integration is available via [`CocoaPods`](https://cocoapods.org/). 
 target 'YourApplication' do
     use_frameworks!
     platform :ios, '10.0'
-    pod 'approov-service-nsurlsession', '3.1.0', :source => "https://github.com/approov/approov-service-nsurlsession.git"
+    pod 'approov-service-nsurlsession', '3.1.1', :source => "https://github.com/approov/approov-service-nsurlsession.git"
     pod 'approov-ios-sdk', '3.1.0', :source => "https://github.com/approov/approov-ios-sdk.git"
 end
 ```
@@ -79,7 +79,7 @@ Please note, that if you application requires `bitcode` support, you will need t
 target 'YourApplication' do
     use_frameworks!
     platform :ios, '10.0'
-    pod 'approov-service-nsurlsession', '3.1.0-bitcode', :source => "https://github.com/approov/approov-service-nsurlsession.git"
+    pod 'approov-service-nsurlsession', '3.1.1-bitcode', :source => "https://github.com/approov/approov-service-nsurlsession.git"
     pod 'approov-ios-sdk-bitcode', '3.1.0', :source => "https://github.com/approov/approov-ios-sdk-bitcode.git"
 end
 ```

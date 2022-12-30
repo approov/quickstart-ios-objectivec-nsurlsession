@@ -19,6 +19,8 @@ Select your codesigning certificate in the `Signing & Capabilities` tab and run 
 
 ![Codesign App](readme-images/codesign-app.png)
 
+> Note that from Xcode 14, the minimum deployment target is iOS 11.0 and you will need to update to this in the general settings to allow compilation.
+
 Once the application is running you will see two buttons:
 
 <p>
@@ -54,7 +56,7 @@ Cloning spec repo `approov` from `https://github.com/approov/approov-service-nsu
 Cloning spec repo `approov-1` from `https://github.com/approov/approov-ios-sdk.git`
 Downloading dependencies
 Installing approov-ios-sdk (3.1.0)
-Installing approov-service-nsurlsession (3.1.0)
+Installing approov-service-nsurlsession (3.1.1)
 Generating Pods project
 Integrating client project
 
