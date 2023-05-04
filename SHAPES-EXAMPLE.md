@@ -56,7 +56,7 @@ Cloning spec repo `approov` from `https://github.com/approov/approov-service-nsu
 Cloning spec repo `approov-1` from `https://github.com/approov/approov-ios-sdk.git`
 Downloading dependencies
 Installing approov-ios-sdk (3.1.0)
-Installing approov-service-nsurlsession (3.1.1)
+Installing approov-service-nsurlsession (3.1.2)
 Generating Pods project
 Integrating client project
 
