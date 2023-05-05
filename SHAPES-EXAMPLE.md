@@ -7,7 +7,7 @@ This quickstart is written specifically for native iOS apps that are written in 
 * The `approov` command line tool [installed](https://approov.io/docs/latest/approov-installation/) with access to your account
 * [Xcode](https://developer.apple.com/xcode/) version 13 installed (version 13.2.1 is used in this guide)
 * The contents of this repo
-* An Apple mobile device with iOS 10 or higher
+* An Apple mobile device with iOS 11 or higher
 * MacOS 11+
 * CocoaPods [installed](https://cocoapods.org) (you must use version 1.9+ which offers support for xcframeworks)
 
