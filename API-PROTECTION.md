@@ -83,11 +83,12 @@ NSError *error;
 if (error != nil) {
     NSString *type = error.userInfo[@"type"];
     if ([type isEqualToString:@"rejection"]) {
-        // failure due to the attestation being rejected, see error.userInfo.message - Attestation Response Code (ARC) for the
-        // failure will be provided in error.userInfo.rejectionARC and comma separated reasons may be provided in
-        // error.userInfo.rejectionReasons
+        // failure due to the attestation being rejected, see error.userInfo.message - Attestation
+        // Response Code (ARC) for the failure will be provided in error.userInfo.rejectionARC and
+        // comma separated reasons may be provided in error.userInfo.rejectionReasons
     } else if ([type isEqualToString:@"network"]) {
-        // failure due to a potentially temporary networking issue, allow for a user initiated retry, see error.userInfo.message
+        // failure due to a potentially temporary networking issue, allow for a user initiated retry,
+        // see error.userInfo.message
     } else {
         // a more permanent error, see error.userInfo.message
     }
