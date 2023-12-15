@@ -2,7 +2,7 @@
 
 This quickstart is written specifically for native iOS apps that are written in ObjectiveC and making the API calls using [`NSURLSession`](https://developer.apple.com/documentation/foundation/nsurlsession) that you wish to protect with Approov. If this is not your situation then check if there is a more relevant quickstart guide available.
 
-This quickstart provides the basic steps for integrating Approov into your app. A more detailed step-by-step guide using a [Shapes App Example](https://github.com/approov/quickstart-ios-objectivec-nsurlsession/blob/master/SHAPES-EXAMPLE.md) is also available.
+This page provides all the steps for integrating Approov into your app. Additionally, a step-by-step tutorial guide using our [Shapes App Example](https://github.com/approov/quickstart-ios-objectivec-nsurlsession/blob/master/SHAPES-EXAMPLE.md) is also available.
 
 To follow this guide you should have received an onboarding email for a trial or paid Approov account.
 
@@ -70,16 +70,4 @@ it will not be called. Instead, you can use the session level delegate:
 didReceiveChallenge:(NSURLAuthenticationChallenge *)challenge
  completionHandler:(void (^)(NSURLSessionAuthChallengeDisposition disposition,
     NSURLCredential *credential))completionHandler
-```
-
-## BITCODE SUPPORT
-Please note, that if you application requires `bitcode` support, you will need to reference different versions of the packages in the `Podfile`:
-
-```
-target 'YourApplication' do
-    use_frameworks!
-    platform :ios, '11.0'
-    pod 'approov-service-nsurlsession', '3.1.2-bitcode', :source => "https://github.com/approov/approov-service-nsurlsession.git"
-    pod 'approov-ios-sdk-bitcode', '3.1.0', :source => "https://github.com/approov/approov-ios-sdk-bitcode.git"
-end
 ```
