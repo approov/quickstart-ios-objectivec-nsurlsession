@@ -101,15 +101,11 @@ You will then be able to use the `userInfo.rejectionReasons` key in the `NSError
 ## ADD YOUR SIGNING CERTIFICATE TO APPROOV
 You should add the signing certificate used to sign apps. These are available in your Apple development account portal. Go to the initial screen showing program resources:
 
-<p>
-    <img src="readme-images/program-resources.png" width="512" title="Apple Program Resources">
-</p>
+![Apple Program Resources](readme-images/program-resources.png)
 
 Click on `Certificates` and you will be presented with the full list of development and distribution certificates for the account. Click on the certificate being used to sign applications from your particular Xcode installation and you will be presented with the following dialog:
 
-<p>
-    <img src="readme-images/download-cert.png" width="512" title="Download Certificate">
-</p>
+![Download Certificate](readme-images/download-cert.png)
 
 Now click on the `Download` button and a file with a `.cer` extension is downloaded, e.g. `development.cer`. Add it to Approov with:
 
