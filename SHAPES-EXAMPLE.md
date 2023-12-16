@@ -113,13 +113,13 @@ The `ApproovNSURLSession` class adds the `Approov-Token` header and also applies
 You should add the signing certificate used to sign apps. These are available in your Apple development account portal. Go to the initial screen showing program resources:
 
 <p>
-    <img src="readme-images/program-resources.png" width="256" title="Apple Program Resources">
+    <img src="readme-images/program-resources.png" width="512" title="Apple Program Resources">
 </p>
 
 Click on `Certificates` and you will be presented with the full list of development and distribution certificates for the account. Click on the certificate being used to sign applications from your particular Xcode installation and you will be presented with the following dialog:
 
 <p>
-    <img src="readme-images/download-cert.png" width="256" title="Download Certificate">
+    <img src="readme-images/download-cert.png" width="512" title="Download Certificate">
 </p>
 
 Now click on the `Download` button and a file with a `.cer` extension is downloaded, e.g. `development.cer`. Add it to Approov with:
