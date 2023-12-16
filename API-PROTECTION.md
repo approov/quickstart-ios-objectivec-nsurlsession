@@ -16,13 +16,27 @@ Note that this will use [Managed Trust Roots](https://approov.io/docs/latest/app
 > **NOTE:** By default a symmetric account key is used to sign the Approov token (HS256 algorithm), so that all API domains will share the same signing secret. Alternatively, it is possible to use a [keyset key](https://approov.io/docs/latest/approov-usage-documentation/#managing-key-sets) which may differ for each API domain and for which a wide range of different signing algorithms and key types are available. This requires you to first [add a new key](https://approov.io/docs/latest/approov-usage-documentation/#adding-a-new-key), and then specify it when [adding each API domain](https://approov.io/docs/latest/approov-usage-documentation/#keyset-key-api-addition). Note that this will impact how you verify the token on your API backend.
 
 ## ADD YOUR SIGNING CERTIFICATE TO APPROOV
-In order for Approov to recognize the app as being valid the appropriate app signing certificate needs to be added to Approov. Follow [adding app signining certificate](https://approov.io/docs/latest/approov-usage-documentation/#adding-apple-app-signing-certificates-from-portal) and download the required `development.cer` file. Add it to Approov with:
+You should add the signing certificate used to sign apps. These are available in your Apple development account portal. Go to the initial screen showing program resources:
+
+<p>
+    <img src="readme-images/program-resources.png" width="256" title="Apple Program Resources">
+</p>
+
+Click on `Certificates` and you will be presented with the full list of development and distribution certificates for the account. Click on the certificate being used to sign applications from your particular Xcode installation and you will be presented with the following dialog:
+
+<p>
+    <img src="readme-images/download-cert.png" width="256" title="Download Certificate">
+</p>
+
+Now click on the `Download` button and a file with a `.cer` extension is downloaded, e.g. `development.cer`. Add it to Approov with:
 
 ```
 approov appsigncert -add development.cer -autoReg
 ```
 
-This ensures that any app signed with the certificate will be recognized by Approov. If it is not possible to download the correct certificate from the portal then it is also possible to [add app signing certificates from the app](https://approov.io/docs/latest/approov-usage-documentation/#adding-apple-app-signing-certificates-from-app).
+This ensures that any app signed with the certificate will be recognized by Approov.
+
+If it is not possible to download the correct certificate from the portal then it is also possible to [add app signing certificates from the app](https://approov.io/docs/latest/approov-usage-documentation/#adding-apple-app-signing-certificates-from-app).
 
 > **IMPORTANT:** Apps built to run on the iOS simulator are not code signed and thus auto-registration does not work for them. In this case you can consider [forcing a device ID to pass](https://approov.io/docs/latest/approov-usage-documentation/#forcing-a-device-id-to-pass) to get a valid attestation.
 
