@@ -6,7 +6,7 @@ This page provides all the steps for integrating Approov into your app. Addition
 
 To follow this guide you should have received an onboarding email for a trial or paid Approov account.
 
-Note that the minimum requirement is iOS 11. You cannot use Approov in apps that support iOS versions older than this.
+Note that the minimum requirement is iOS 12. You cannot use Approov in apps that support iOS versions older than this.
 
 ## ADDING APPROOV SERVICE DEPENDENCY
 The Approov integration is available via [`CocoaPods`](https://cocoapods.org/). This allows inclusion into the project by simply specifying a dependency in the `Podfile` for the app:
@@ -14,9 +14,9 @@ The Approov integration is available via [`CocoaPods`](https://cocoapods.org/). 
 ```
 target 'YourApplication' do
     use_frameworks!
-    platform :ios, '11.0'
-    pod 'approov-service-nsurlsession', '3.1.2', :source => "https://github.com/approov/approov-service-nsurlsession.git"
-    pod 'approov-ios-sdk', '3.1.0', :source => "https://github.com/approov/approov-ios-sdk.git"
+    platform :ios, '12.0'
+    pod 'approov-service-nsurlsession', '3.2.0', :source => "https://github.com/approov/approov-service-nsurlsession.git"
+    pod 'approov-ios-sdk', '3.2.0', :source => "https://github.com/approov/approov-ios-sdk.git"
 end
 ```
 
