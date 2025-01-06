@@ -1,14 +1,15 @@
+source 'https://cdn.cocoapods.org/'
+
 target 'ShapesApp' do
-    use_frameworks!
-    platform :ios, '12.0'
-    pod 'approov-service-nsurlsession', '3.2.0', :source => "https://github.com/approov/approov-service-nsurlsession.git"
-    pod 'approov-ios-sdk', '3.2.0', :source => "https://github.com/approov/approov-ios-sdk.git"
+  use_frameworks!
+  platform :ios, '12.0'
+  pod 'approov-service-nsurlsession', '3.3.0'
 end
-# This disables bitcode in all the pods (but not in the main app!!!)
+
 post_install do |installer|
-    installer.pods_project.targets.each do |target|
-      target.build_configurations.each do |config|
-        config.build_settings['ENABLE_BITCODE'] = 'NO'
-      end
+  installer.pods_project.targets.each do |target|
+    target.build_configurations.each do |config|
+      config.build_settings['ENABLE_BITCODE'] = 'NO'
     end
   end
+end

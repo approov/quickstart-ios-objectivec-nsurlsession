@@ -50,18 +50,16 @@ Get the latest Approov SDK by using `CocoaPods`. The `Podfile` configuration fil
 Install the dependency by executing:
 
 ```
-$ pod install
+$ Updating local specs repositories
 Analyzing dependencies
-Cloning spec repo `approov` from `https://github.com/approov/approov-service-nsurlsession.git`
-Cloning spec repo `approov-1` from `https://github.com/approov/approov-ios-sdk.git`
 Downloading dependencies
-Installing approov-ios-sdk (3.2.0)
-Installing approov-service-nsurlsession (3.2.0)
+Installing approov-service-nsurlsession (3.3.0)
 Generating Pods project
 Integrating client project
+Pod installation complete! There is 1 dependency from the Podfile and 1 total pod installed.
 
 [!] Please close any current Xcode sessions and use `ApproovShapes.xcworkspace` for this project from now on.
-Pod installation complete! There are 2 dependencies from the Podfile and 2 total pods installed.
+Pod installation complete!
 ```
 
 The Approov SDK and `approov-service-nsurlsession` are now included as dependencies in your project.
