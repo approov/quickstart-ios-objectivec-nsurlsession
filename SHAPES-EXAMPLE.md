@@ -50,10 +50,11 @@ Get the latest Approov SDK by using `CocoaPods`. The `Podfile` configuration fil
 Install the dependency by executing:
 
 ```
+$ pod install
 $ Updating local specs repositories
 Analyzing dependencies
 Downloading dependencies
-Installing approov-service-nsurlsession (3.3.0)
+Installing approov-service-nsurlsession (3.5.0)
 Generating Pods project
 Integrating client project
 Pod installation complete! There is 1 dependency from the Podfile and 1 total pod installed.
