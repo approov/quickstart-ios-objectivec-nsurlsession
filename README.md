@@ -15,7 +15,7 @@ The Approov integration is available via [`CocoaPods`](https://cocoapods.org/). 
 target 'YourApplication' do
     use_frameworks!
     platform :ios, '12.0'
-    pod 'approov-service-nsurlsession', '3.5.0'
+    pod 'approov-service-nsurlsession', '3.5.1'
 end
 ```
 
