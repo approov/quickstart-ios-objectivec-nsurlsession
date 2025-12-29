@@ -5,7 +5,7 @@ This quickstart is written specifically for native iOS apps that are written in 
 ## WHAT YOU WILL NEED
 * Access to a trial or paid Approov account
 * The `approov` command line tool [installed](https://approov.io/docs/latest/approov-installation/) with access to your account
-* [Xcode](https://developer.apple.com/xcode/) version 13 installed (version 13.2.1 is used in this guide)
+* [Xcode](https://developer.apple.com/xcode/) version 16 installed (version 16.4 is used in this guide)
 * The contents of this repo
 * An Apple mobile device with iOS 12 or higher
 * MacOS 11+
@@ -54,7 +54,7 @@ $ pod install
 $ Updating local specs repositories
 Analyzing dependencies
 Downloading dependencies
-Installing approov-service-nsurlsession (3.5.1)
+Installing approov-service-nsurlsession (3.5.3)
 Generating Pods project
 Integrating client project
 Pod installation complete! There is 1 dependency from the Podfile and 1 total pod installed.

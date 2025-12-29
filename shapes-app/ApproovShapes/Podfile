@@ -3,7 +3,7 @@ source 'https://cdn.cocoapods.org/'
 target 'ShapesApp' do
   use_frameworks!
   platform :ios, '12.0'
-  pod 'approov-service-nsurlsession', '3.5.1'
+  pod 'approov-service-nsurlsession', '3.5.3'
 end
 
 post_install do |installer|
