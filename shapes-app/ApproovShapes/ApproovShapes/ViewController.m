@@ -43,6 +43,9 @@ NSString* shapesEndpoint = @"https://shapes.approov.io/v1/shapes";
 // *** UNCOMMENT THE LINE BELOW FOR APPROOV API PROTECTION
 //NSString* shapesEndpoint = @"https://shapes.approov.io/v3/shapes";
 
+// *** UNCOMMENT THE LINE BELOW FOR APPROOV INSTALLATION MESSAGE SIGNING
+//NSString* shapesEndpoint = @"https://shapes.approov.io/v5/shapes";
+
 // *** COMMENT THE LINE BELOW IF USING APPROOV SECRETS PROTECTION
 NSString* apiSecretKey = @"yXClypapWNHIifHUWmBIyPFAm";
 
@@ -55,15 +58,20 @@ NSString* apiSecretKey = @"yXClypapWNHIifHUWmBIyPFAm";
     defaultSession = [NSURLSession sessionWithConfiguration:NSURLSessionConfiguration.defaultSessionConfiguration];
     
     // *** UNCOMMENT THE LINES BELOW TO USE APPROOV
-    /*NSError* error;
-    [ApproovService initialize:@"<enter-you-config-string-here>" error:&error];
-    if (error != nil) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            self.statusImageView.image = [UIImage imageNamed:@"approov"];
-            self.statusTextView.text = @"Error initializing ApproovService";
-        });
-    }
-    defaultSession = [ApproovNSURLSession sessionWithConfiguration:NSURLSessionConfiguration.defaultSessionConfiguration];*/
+    //NSError* error;
+    //[ApproovService initialize:@"<enter-your-config-string-here>" error:&error];
+    //[ApproovService setDevKey:@"<enter-your-dev-key-here>"];
+    //if (error != nil) {
+    //    dispatch_async(dispatch_get_main_queue(), ^{
+    //        self.statusImageView.image = [UIImage imageNamed:@"approov"];
+    //        self.statusTextView.text = @"Error initializing ApproovService";
+    //    });
+    //}
+
+    // *** UNCOMMENT THE LINE BELOW FOR APPROOV INSTALLATION MESSAGE SIGNING
+    //[ApproovService setMessageSigningMode:ApproovMessageSigningModeInstall];
+
+    //defaultSession = [ApproovNSURLSession sessionWithConfiguration:NSURLSessionConfiguration.defaultSessionConfiguration];
     
     // *** UNCOMMENT THE LINE BELOW TO USE APPROOV SECRETS PROTECTION
     //[ApproovService addSubstitutionHeader:apiKeyHeader requiredPrefix:@""];
@@ -123,6 +131,20 @@ NSString* apiSecretKey = @"yXClypapWNHIifHUWmBIyPFAm";
     NSURLSessionDataTask* task = [defaultSession dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error){
         NSString* message;
         UIImage* image;
+
+        // Log the full Shapes response so Approov/message-signing failures are visible in Xcode.
+        NSString* responseBody = @"<empty>";
+        if (data != nil && data.length > 0) {
+            responseBody = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+            if (responseBody == nil)
+                responseBody = @"<non-UTF8 response body>";
+        }
+        if (error == nil && [response isKindOfClass:[NSHTTPURLResponse class]]) {
+            NSHTTPURLResponse* httpResponse = (NSHTTPURLResponse*)response;
+            NSLog(@"\n=== Shapes Response ===\nURL: %@\nStatus: %ld\nHeaders: %@\nBody: %@\n=======================", shapesURL, (long)httpResponse.statusCode, httpResponse.allHeaderFields, responseBody);
+        } else if (error != nil) {
+            NSLog(@"\n=== Shapes Response Error ===\nURL: %@\nError: %@\nBody: %@\n=============================", shapesURL, error.localizedDescription, responseBody);
+        }
         
         // analyze response
         if (error == nil) {
@@ -131,7 +153,7 @@ NSString* apiSecretKey = @"yXClypapWNHIifHUWmBIyPFAm";
             if (code == 200) {
                 // successful http response
                 message = @"200";
-                NSLog(@"Data: %@", [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
+                NSLog(@"Data: %@", responseBody);
                 // unmarshal the JSON response
                 NSError* error;
                 NSDictionary* jsonDict = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:&error];
