@@ -132,6 +132,7 @@ NSString* apiSecretKey = @"yXClypapWNHIifHUWmBIyPFAm";
         NSString* message;
         UIImage* image;
 
+#ifdef DEBUG
         // Log the full Shapes response so Approov/message-signing failures are visible in Xcode.
         NSString* responseBody = @"<empty>";
         if (data != nil && data.length > 0) {
@@ -145,6 +146,7 @@ NSString* apiSecretKey = @"yXClypapWNHIifHUWmBIyPFAm";
         } else if (error != nil) {
             NSLog(@"\n=== Shapes Response Error ===\nURL: %@\nError: %@\nBody: %@\n=============================", shapesURL, error.localizedDescription, responseBody);
         }
+#endif
         
         // analyze response
         if (error == nil) {
@@ -153,7 +155,6 @@ NSString* apiSecretKey = @"yXClypapWNHIifHUWmBIyPFAm";
             if (code == 200) {
                 // successful http response
                 message = @"200";
-                NSLog(@"Data: %@", responseBody);
                 // unmarshal the JSON response
                 NSError* error;
                 NSDictionary* jsonDict = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:&error];
