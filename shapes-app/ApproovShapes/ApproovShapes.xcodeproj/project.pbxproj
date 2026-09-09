@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E03947076762434A6AC4DB9E /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = CA81C14A18F36365044CDDE6 /* SceneDelegate.m */; };
 		176E7C5D24EE7FA900BF3945 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 176E7C5C24EE7FA900BF3945 /* AppDelegate.m */; };
 		176E7C6324EE7FA900BF3945 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 176E7C6224EE7FA900BF3945 /* ViewController.m */; };
 		176E7C6624EE7FA900BF3945 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 176E7C6424EE7FA900BF3945 /* Main.storyboard */; };
@@ -16,6 +17,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		CA81C14A18F36365044CDDE6 /* SceneDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SceneDelegate.m; sourceTree = "<group>"; };
+		5A7776C7ECE885F423C46926 /* SceneDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SceneDelegate.h; sourceTree = "<group>"; };
 		176E7C5824EE7FA900BF3945 /* ApproovShapes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ApproovShapes.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		176E7C5B24EE7FA900BF3945 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		176E7C5C24EE7FA900BF3945 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -59,7 +62,9 @@
 			isa = PBXGroup;
 			children = (
 				176E7C5B24EE7FA900BF3945 /* AppDelegate.h */,
+				5A7776C7ECE885F423C46926 /* SceneDelegate.h */,
 				176E7C5C24EE7FA900BF3945 /* AppDelegate.m */,
+				CA81C14A18F36365044CDDE6 /* SceneDelegate.m */,
 				176E7C6124EE7FA900BF3945 /* ViewController.h */,
 				176E7C6224EE7FA900BF3945 /* ViewController.m */,
 				176E7C6424EE7FA900BF3945 /* Main.storyboard */,
@@ -143,6 +148,7 @@
 			files = (
 				176E7C6324EE7FA900BF3945 /* ViewController.m in Sources */,
 				176E7C5D24EE7FA900BF3945 /* AppDelegate.m in Sources */,
+				E03947076762434A6AC4DB9E /* SceneDelegate.m in Sources */,
 				176E7C6E24EE7FAC00BF3945 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -219,7 +225,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.6;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -271,7 +277,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.6;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -287,7 +293,7 @@
 				DEVELOPMENT_TEAM = 653V7L98XW;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = ApproovShapes/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -306,7 +312,7 @@
 				DEVELOPMENT_TEAM = 653V7L98XW;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = ApproovShapes/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

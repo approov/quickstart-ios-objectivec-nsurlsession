@@ -15,9 +15,8 @@
 // THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
-#import <UIKit/UIKit.h>
+#import "SceneDelegate.h"
 
-@interface AppDelegate : UIResponder <UIApplicationDelegate>
-
+@implementation SceneDelegate
+// UIKit creates the window and loads Main.storyboard from the scene configuration.
 @end
-

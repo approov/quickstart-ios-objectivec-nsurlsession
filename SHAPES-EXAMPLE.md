@@ -7,7 +7,7 @@ This quickstart is written specifically for native iOS apps that are written in 
 * The `approov` command line tool [installed](https://approov.io/docs/latest/approov-installation/) with access to your account
 * [Xcode](https://developer.apple.com/xcode/) version 16 installed (version 16.4 is used in this guide)
 * The contents of this repo
-* An Apple mobile device with iOS 12 or higher
+* An Apple mobile device with iOS 15 or higher
 * MacOS 11+
 * CocoaPods [installed](https://cocoapods.org) (you must use version 1.9+ which offers support for xcframeworks)
 
@@ -19,7 +19,7 @@ Select your codesigning certificate in the `Signing & Capabilities` tab and run 
 
 ![Codesign App](readme-images/codesign-app.png)
 
-> Note that from Xcode 14, the minimum deployment target is iOS 11.0 and you will need to update to this in the general settings to allow compilation.
+> The sample targets iOS 15 or later and loads Main.storyboard through its scene configuration.
 
 Once the application is running you will see two buttons:
 
